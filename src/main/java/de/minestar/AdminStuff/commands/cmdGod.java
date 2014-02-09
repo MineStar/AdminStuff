@@ -35,74 +35,65 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdGod extends AbstractExtendedCommand {
 
-	public cmdGod(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdGod(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /god <br>
-	 * Toggle God-status
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		// make himself a god
-		if (args.length == 0)
-			changeGodMode(player, player);
-		else
-			changeGodMode(player, args);
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /god <br>
+     * Toggle God-status
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        // make himself a god
+        if (args.length == 0)
+            changeGodMode(player, player);
+        else
+            changeGodMode(player, args);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		if (args.length == 0)
-			ConsoleUtils.printError(pluginName,
-					"You are God, why do you want to activate god mode?");
-		else
-			changeGodMode(console, args);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        if (args.length == 0)
+            ConsoleUtils.printError(pluginName, "You are God, why do you want to activate god mode?");
+        else
+            changeGodMode(console, args);
+    }
 
-	// function to search the players
-	private void changeGodMode(CommandSender sender, String... targetNames) {
-		Player target = null;
-		for (String targetName : targetNames) {
-			target = PlayerUtils.getOnlinePlayer(targetName);
-			if (target == null)
-				ChatUtils.writeError(sender, pluginName, "Spieler '"
-						+ targetName + "' wurde nicht gefunden!");
-			else if (target.isDead() || !target.isOnline())
-				ChatUtils.writeError(sender, pluginName, "Spieler '"
-						+ targetName + "' ist tot oder nicht online!");
-			else
-				changeGodMode(sender, target);
-		}
-	}
+    // function to search the players
+    private void changeGodMode(CommandSender sender, String... targetNames) {
+        Player target = null;
+        for (String targetName : targetNames) {
+            target = PlayerUtils.getOnlinePlayer(targetName);
+            if (target == null)
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
+            else if (target.isDead() || !target.isOnline())
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' ist tot oder nicht online!");
+            else
+                changeGodMode(sender, target);
+        }
+    }
 
-	// function to make them god
-	private void changeGodMode(CommandSender sender, Player target) {
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(target);
-		Boolean godMode = mPlayer.getBoolean("adminstuff.god");
-		if (godMode == null || !godMode)
-			godMode = true;
-		else
-			godMode = false;
-		mPlayer.setBoolean("adminstuff.god", godMode);
-		if (godMode) {
-			ChatUtils
-					.writeSuccess(sender, pluginName,
-							"Spieler '" + target.getName()
-									+ "' ist jetzt unsterblich!");
-			PlayerUtils.sendInfo(target, pluginName,
-					"Unsterblichkeit aktiviert!");
-		} else {
-			ChatUtils.writeSuccess(sender, pluginName,
-					"Spieler '" + target.getName() + "' ist wieder sterblich!");
-			PlayerUtils.sendInfo(target, pluginName,
-					"Unsterblichkeit deaktiviert!");
-		}
-	}
+    // function to make them god
+    private void changeGodMode(CommandSender sender, Player target) {
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(target);
+        Boolean godMode = mPlayer.getBoolean("adminstuff.god");
+        if (godMode == null || !godMode)
+            godMode = true;
+        else
+            godMode = false;
+        mPlayer.setBoolean("adminstuff.god", godMode);
+        if (godMode) {
+            ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist jetzt unsterblich!");
+            PlayerUtils.sendInfo(target, pluginName, "Unsterblichkeit aktiviert!");
+        } else {
+            ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist wieder sterblich!");
+            PlayerUtils.sendInfo(target, pluginName, "Unsterblichkeit deaktiviert!");
+        }
+    }
 }

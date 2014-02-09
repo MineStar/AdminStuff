@@ -36,38 +36,34 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdUnban extends AbstractCommand {
 
-	public cmdUnban(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdUnban(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	public void execute(String[] args, Player player) {
-		unban(args, player);
-	}
+    @Override
+    public void execute(String[] args, Player player) {
+        unban(args, player);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		unban(args, console);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        unban(args, console);
+    }
 
-	private void unban(String[] args, CommandSender sender) {
-		String targetName = PlayerUtils.getCorrectPlayerName(args[0]);
-		if (targetName == null) {
-			ChatUtils.writeError(sender, pluginName, "Spieler '" + args[0]
-					+ "' existiert nicht!");
-		} else {
-			// MINECRAFT HACK
-			BanList banList = ((CraftServer) Bukkit.getServer()).getHandle()
-					.getNameBans();
-			if (!banList.isBanned(targetName))
-				ChatUtils.writeError(sender, pluginName, "Spieler '"
-						+ targetName + " war nicht gebannt!");
-			else {
-				banList.remove(targetName);
-				ChatUtils.writeSuccess(sender, pluginName, "Spieler '"
-						+ targetName + "' wurde entbannt!");
-			}
-		}
-	}
+    private void unban(String[] args, CommandSender sender) {
+        String targetName = PlayerUtils.getCorrectPlayerName(args[0]);
+        if (targetName == null) {
+            ChatUtils.writeError(sender, pluginName, "Spieler '" + args[0] + "' existiert nicht!");
+        } else {
+            // MINECRAFT HACK
+            BanList banList = ((CraftServer) Bukkit.getServer()).getHandle().getNameBans();
+            if (!banList.isBanned(targetName))
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + " war nicht gebannt!");
+            else {
+                banList.remove(targetName);
+                ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
+            }
+        }
+    }
 
 }

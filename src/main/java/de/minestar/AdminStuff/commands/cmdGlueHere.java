@@ -32,52 +32,44 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdGlueHere extends AbstractExtendedCommand {
 
-	public cmdGlueHere(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdGlueHere(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /gluehere <Player><br>
-	 * Glues the player at the position the command  caller is looking
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the targets name
-	 */
-	public void execute(String[] args, Player player) {
-		Player target = null;
-		MinestarPlayer mPlayer = null;
-		for (String targetName : args) {
-			target = PlayerUtils.getOnlinePlayer(targetName);
-			if (target == null)
-				PlayerUtils.sendError(player, pluginName, "Spieler '"
-						+ targetName + "' wurde nicht gefunden!");
-			else if (target.isDead() || !target.isOnline())
-				PlayerUtils.sendError(player, pluginName, "Spieler '"
-						+ targetName + "' ist tot oder offline!");
-			else {
+    @Override
+    /**
+     * Representing the command <br>
+     * /gluehere <Player><br>
+     * Glues the player at the position the command  caller is looking
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     *            split[0] is the targets name
+     */
+    public void execute(String[] args, Player player) {
+        Player target = null;
+        MinestarPlayer mPlayer = null;
+        for (String targetName : args) {
+            target = PlayerUtils.getOnlinePlayer(targetName);
+            if (target == null)
+                PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
+            else if (target.isDead() || !target.isOnline())
+                PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist tot oder offline!");
+            else {
 
-				mPlayer = MinestarCore.getPlayer(target);
-				Location loc = mPlayer.getLocation("adminstuff.glue");
-				if (loc == null) {
-					mPlayer.setLocation("adminstuff.glue", player
-							.getLastTwoTargetBlocks(null, 50).get(0)
-							.getLocation());
-					PlayerUtils.sendSuccess(player, pluginName, "Spieler '"
-							+ target.getName() + "' ist festgeklebt!");
-					PlayerUtils.sendInfo(target, pluginName,
-							"Du bist festgeklebt!");
-				} else {
-					mPlayer.removeValue("adminstuff.glue", Location.class);
-					PlayerUtils.sendSuccess(player, pluginName, "Spieler '"
-							+ target.getName() + "' ist wieder frei!");
-					PlayerUtils.sendInfo(target, pluginName,
-							"Du bist wieder frei!");
-				}
-			}
-		}
-	}
+                mPlayer = MinestarCore.getPlayer(target);
+                Location loc = mPlayer.getLocation("adminstuff.glue");
+                if (loc == null) {
+                    mPlayer.setLocation("adminstuff.glue", player.getLastTwoTargetBlocks(null, 50).get(0).getLocation());
+                    PlayerUtils.sendSuccess(player, pluginName, "Spieler '" + target.getName() + "' ist festgeklebt!");
+                    PlayerUtils.sendInfo(target, pluginName, "Du bist festgeklebt!");
+                } else {
+                    mPlayer.removeValue("adminstuff.glue", Location.class);
+                    PlayerUtils.sendSuccess(player, pluginName, "Spieler '" + target.getName() + "' ist wieder frei!");
+                    PlayerUtils.sendInfo(target, pluginName, "Du bist wieder frei!");
+                }
+            }
+        }
+    }
 }

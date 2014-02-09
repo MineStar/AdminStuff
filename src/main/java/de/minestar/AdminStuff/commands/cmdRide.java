@@ -34,38 +34,37 @@ import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 
 public class cmdRide extends AbstractExtendedCommand {
 
-	private final Map<String, Variant> variants;
+    private final Map<String, Variant> variants;
 
-	public cmdRide(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-		this.variants = new HashMap<String, Variant>();
-		fillVariantsMap();
-	}
+    public cmdRide(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+        this.variants = new HashMap<String, Variant>();
+        fillVariantsMap();
+    }
 
-	private void fillVariantsMap() {
-		variants.put("undead", Variant.UNDEAD_HORSE);
-		variants.put("skelet", Variant.SKELETON_HORSE);
-		variants.put("donkey", Variant.DONKEY);
-		variants.put("mule", Variant.MULE);
-	}
+    private void fillVariantsMap() {
+        variants.put("undead", Variant.UNDEAD_HORSE);
+        variants.put("skelet", Variant.SKELETON_HORSE);
+        variants.put("donkey", Variant.DONKEY);
+        variants.put("mule", Variant.MULE);
+    }
 
-	@Override
-	public void execute(String[] args, Player player) {
-		// Spawn horse
-		Horse horse = (Horse) player.getWorld().spawnEntity(
-				player.getLocation(), EntityType.HORSE);
-		Variant var = Variant.HORSE;
-		// Possible variant
-		if (args.length == 1) {
-			var = variants.get(args[0].toLowerCase());
-			if (var == null)
-				var = Variant.HORSE;
-		}
-		HorseInventory inv = horse.getInventory();
-		inv.setSaddle(new ItemStack(Material.SADDLE));
-		horse.setVariant(var);
-		horse.setOwner(player);
-		horse.setPassenger(player);
-	}
+    @Override
+    public void execute(String[] args, Player player) {
+        // Spawn horse
+        Horse horse = (Horse) player.getWorld().spawnEntity(player.getLocation(), EntityType.HORSE);
+        Variant var = Variant.HORSE;
+        // Possible variant
+        if (args.length == 1) {
+            var = variants.get(args[0].toLowerCase());
+            if (var == null)
+                var = Variant.HORSE;
+        }
+        HorseInventory inv = horse.getInventory();
+        inv.setSaddle(new ItemStack(Material.SADDLE));
+        horse.setVariant(var);
+        horse.setOwner(player);
+        horse.setPassenger(player);
+    }
 
 }

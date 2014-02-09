@@ -35,83 +35,80 @@ import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
 public class KitManager {
 
-	private Map<String, List<ItemStack>> kits = new HashMap<String, List<ItemStack>>();
+    private Map<String, List<ItemStack>> kits = new HashMap<String, List<ItemStack>>();
 
-	public KitManager(File dataFolder) {
-		loadKits(dataFolder);
-	}
+    public KitManager(File dataFolder) {
+        loadKits(dataFolder);
+    }
 
-	private void loadKits(File dataFolder) {
-		File kitFile = new File(dataFolder, "kits.txt");
-		if (kitFile.exists()) {
-			try {
-				BufferedReader bReader = new BufferedReader(new FileReader(
-						kitFile));
-				String line = "";
+    private void loadKits(File dataFolder) {
+        File kitFile = new File(dataFolder, "kits.txt");
+        if (kitFile.exists()) {
+            try {
+                BufferedReader bReader = new BufferedReader(new FileReader(kitFile));
+                String line = "";
 
-				// value and key for the map
-				List<ItemStack> kit = null;
-				String name = null;
+                // value and key for the map
+                List<ItemStack> kit = null;
+                String name = null;
 
-				// variables for parsing the strings
-				Pattern p1 = Pattern.compile(":");
-				Pattern p2 = Pattern.compile("x");
-				String[] split = null;
-				short subId = 0;
-				int amount = 1;
-				while ((line = bReader.readLine()) != null) {
-					// new kit
-					if (line.startsWith("#")) {
-						// first kit isn't filled with items
-						if (kit != null)
-							kits.put(name, kit);
-						name = line.substring(1);
-						kit = new LinkedList<ItemStack>();
-					}
-					// add item to kit
-					else {
-						// split amount
-						split = p2.split(line);
-						// no amount given - standard is one
-						if (split.length == 1)
-							amount = 1;
-						else {
-							amount = Integer.valueOf(split[1]);
-							line = split[0];
-						}
+                // variables for parsing the strings
+                Pattern p1 = Pattern.compile(":");
+                Pattern p2 = Pattern.compile("x");
+                String[] split = null;
+                short subId = 0;
+                int amount = 1;
+                while ((line = bReader.readLine()) != null) {
+                    // new kit
+                    if (line.startsWith("#")) {
+                        // first kit isn't filled with items
+                        if (kit != null)
+                            kits.put(name, kit);
+                        name = line.substring(1);
+                        kit = new LinkedList<ItemStack>();
+                    }
+                    // add item to kit
+                    else {
+                        // split amount
+                        split = p2.split(line);
+                        // no amount given - standard is one
+                        if (split.length == 1)
+                            amount = 1;
+                        else {
+                            amount = Integer.valueOf(split[1]);
+                            line = split[0];
+                        }
 
-						// split sub id
-						split = p1.split(line);
-						// no sub id
-						if (split.length == 1)
-							subId = 0;
-						else
-							subId = Short.valueOf(split[1]);
-						Material mat = Material.matchMaterial(split[0]);
-						kit.add(new ItemStack(mat, amount, subId));
-					}
-				}
-				// add last kit to list
-				if (name != null && kit != null && !kit.isEmpty())
-					kits.put(name, kit);
+                        // split sub id
+                        split = p1.split(line);
+                        // no sub id
+                        if (split.length == 1)
+                            subId = 0;
+                        else
+                            subId = Short.valueOf(split[1]);
+                        Material mat = Material.matchMaterial(split[0]);
+                        kit.add(new ItemStack(mat, amount, subId));
+                    }
+                }
+                // add last kit to list
+                if (name != null && kit != null && !kit.isEmpty())
+                    kits.put(name, kit);
 
-				ConsoleUtils.printInfo(Core.NAME, kits.size() + " kits loaded");
+                ConsoleUtils.printInfo(Core.NAME, kits.size() + " kits loaded");
 
-				bReader.close();
-			} catch (Exception e) {
-				ConsoleUtils.printException(e, Core.NAME,
-						"Error while reading " + kitFile + " !");
-			}
-		} else
-			ConsoleUtils.printWarning(Core.NAME, kitFile
-					+ " doesn't exist! No kits loaded!");
-	}
+                bReader.close();
+            } catch (Exception e) {
+                ConsoleUtils.printException(e, Core.NAME, "Error while reading " + kitFile + " !");
+            }
+        } else
+            ConsoleUtils.printWarning(Core.NAME, kitFile + " doesn't exist! No kits loaded!");
+    }
 
-	public List<ItemStack> getKit(String name) {
-		return kits.get(name);
-	}
+    public List<ItemStack> getKit(String name) {
+        return kits.get(name);
+    }
 
-	public Iterable<String> getNames() {
-		return kits.keySet();
-	}
+    public Iterable<String> getNames() {
+        return kits.keySet();
+    }
 }

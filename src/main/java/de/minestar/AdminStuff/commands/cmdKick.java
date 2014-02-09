@@ -32,39 +32,36 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdKick extends AbstractExtendedCommand {
 
-	public cmdKick(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdKick(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	public void execute(String[] args, Player player) {
-		kickPlayer(args, player);
-	}
+    @Override
+    public void execute(String[] args, Player player) {
+        kickPlayer(args, player);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		kickPlayer(args, console);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        kickPlayer(args, console);
+    }
 
-	private void kickPlayer(String[] args, CommandSender sender) {
-		String targetName = args[0];
-		String msg = null;
-		if (args.length == 1)
-			msg = "Du wurdest gekickt!";
-		else
-			msg = ChatUtils.getMessage(args, 1);
+    private void kickPlayer(String[] args, CommandSender sender) {
+        String targetName = args[0];
+        String msg = null;
+        if (args.length == 1)
+            msg = "Du wurdest gekickt!";
+        else
+            msg = ChatUtils.getMessage(args, 1);
 
-		Player target = PlayerUtils.getOnlinePlayer(targetName);
-		if (target == null)
-			ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName
-					+ "' wurde nicht gefunden!");
-		else if (!target.isOnline())
-			ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName
-					+ "' ist nicht online!");
-		else {
-			target.kickPlayer(msg);
-			ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + targetName
-					+ "' wurde gekickt!");
-		}
-	}
+        Player target = PlayerUtils.getOnlinePlayer(targetName);
+        if (target == null)
+            ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
+        else if (!target.isOnline())
+            ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' ist nicht online!");
+        else {
+            target.kickPlayer(msg);
+            ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + targetName + "' wurde gekickt!");
+        }
+    }
 }

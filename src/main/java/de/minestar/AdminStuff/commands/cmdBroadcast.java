@@ -32,31 +32,30 @@ import de.minestar.minestarlibrary.utils.ChatUtils;
 
 public class cmdBroadcast extends AbstractExtendedCommand {
 
-	public cmdBroadcast(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdBroadcast(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /broadcast <Message><br>
-	 * Broadcast a message
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		broadCast(args);
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /broadcast <Message><br>
+     * Broadcast a message
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        broadCast(args);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		broadCast(args);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        broadCast(args);
+    }
 
-	private void broadCast(String[] args) {
-		Bukkit.broadcastMessage(ChatColor.RED + "[BROADCAST] : "
-				+ ChatColor.GREEN + ChatUtils.getMessage(args));
-	}
+    private void broadCast(String[] args) {
+        Bukkit.broadcastMessage(ChatColor.RED + "[BROADCAST] : " + ChatColor.GREEN + ChatUtils.getMessage(args));
+    }
 }

@@ -26,13 +26,13 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdToggleDownfall extends AbstractCommand {
 
-	public cmdToggleDownfall(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdToggleDownfall(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	public void execute(String[] args, Player player) {
-		PlayerUtils.sendError(player, pluginName, "Benutz den Befehl /weather");
-	}
+    @Override
+    public void execute(String[] args, Player player) {
+        PlayerUtils.sendError(player, pluginName, "Benutz den Befehl /weather");
+    }
 
 }

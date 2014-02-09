@@ -77,44 +77,44 @@ import de.minestar.minestarlibrary.commands.CommandList;
 
 public class Core extends AbstractCore {
 
-	public static String NAME = "AdminStuff";
+    public static String NAME = "AdminStuff";
 
-	/** Listener */
-	private Listener entityListener;
-	private Listener playerListener;
+    /** Listener */
+    private Listener entityListener;
+    private Listener playerListener;
 
-	/** Manager */
-	private PlayerManager pManager;
-	private KitManager kManager;
+    /** Manager */
+    private PlayerManager pManager;
+    private KitManager kManager;
 
-	public Core() {
-		super("AdminStuff");
-	}
+    public Core() {
+        super("AdminStuff");
+    }
 
-	@Override
-	protected boolean createManager() {
-		pManager = new PlayerManager();
-		kManager = new KitManager(getDataFolder());
-		return true;
-	}
+    @Override
+    protected boolean createManager() {
+        pManager = new PlayerManager();
+        kManager = new KitManager(getDataFolder());
+        return true;
+    }
 
-	@Override
-	protected boolean createListener() {
-		entityListener = new EntityListener();
-		playerListener = new PlayerListener(pManager);
-		return true;
-	}
+    @Override
+    protected boolean createListener() {
+        entityListener = new EntityListener();
+        playerListener = new PlayerListener(pManager);
+        return true;
+    }
 
-	@Override
-	protected boolean registerEvents(PluginManager pm) {
-		pm.registerEvents(entityListener, this);
-		pm.registerEvents(playerListener, this);
-		return true;
-	}
+    @Override
+    protected boolean registerEvents(PluginManager pm) {
+        pm.registerEvents(entityListener, this);
+        pm.registerEvents(playerListener, this);
+        return true;
+    }
 
-	@Override
-	protected boolean createCommands() {
-		// @formatter:off
+    @Override
+    protected boolean createCommands() {
+        // @formatter:off
 		cmdList = new CommandList(
 				NAME,
 				// USER PUNISH COMMANDS
@@ -248,6 +248,6 @@ public class Core extends AbstractCore {
 				new cmdRide("/ride", "[Player]",
 						"adminstuff.commands.admin.ride"));
 		// @formatter:on
-		return true;
-	}
+        return true;
+    }
 }

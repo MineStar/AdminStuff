@@ -23,33 +23,44 @@ import java.util.Map;
 import com.sun.net.httpserver.HttpExchange;
 
 import de.minestar.AdminStuff.webserver.exceptions.LoginInvalidException;
+import de.minestar.AdminStuff.webserver.template.Template;
+import de.minestar.AdminStuff.webserver.template.TemplateHandler;
+import de.minestar.AdminStuff.webserver.template.TemplateReplacement;
 import de.minestar.AdminStuff.webserver.units.AuthHandler;
 import de.minestar.AdminStuff.webserver.units.UserData;
 
 public class DoLoginPageHandler extends AbstractHTMLHandler {
 
-	public DoLoginPageHandler(String templateFile) {
-		super(false, templateFile);
-	}
+    private Template template;
+    private TemplateReplacement rpl_navigation, rpl_user, rpl_token;
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public String handle(HttpExchange http) throws LoginInvalidException {
-		Map<String, String> params = (Map<String, String>) http
-				.getAttribute("parameters");
+    public DoLoginPageHandler() {
+        super(false);
+        this.template = TemplateHandler.getTemplate("doLogin");
+        this.rpl_user = new TemplateReplacement("USERNAME");
+        this.rpl_token = new TemplateReplacement("TOKEN");
+        this.rpl_navigation = new TemplateReplacement("NAVIGATION", TemplateHandler.getTemplate("tpl_navi_on").getString());
+    }
 
-		String userName = params.get("txt_username");
-		String clearPassword = params.get("txt_password");
+    @Override
+    @SuppressWarnings("unchecked")
+    public String handle(HttpExchange http) throws LoginInvalidException {
+        Map<String, String> params = (Map<String, String>) http.getAttribute("parameters");
+        String userName = params.get("txt_username");
+        String clearPassword = params.get("txt_password");
 
-		if (userName != null && clearPassword != null
-				&& AuthHandler.doLogin(userName, clearPassword)) {
-			UserData user = AuthHandler.getUser(userName);
-			String response = this.templateString;
-			response = response.replaceAll("\\{USERNAME\\}", userName);
-			response = response.replaceAll("\\{TOKEN\\}", user.getToken());
-			return response;
-		} else {
-			throw new LoginInvalidException();
-		}
-	}
+        if (userName != null && clearPassword != null && AuthHandler.doLogin(userName, clearPassword)) {
+            // get userdata
+            UserData user = AuthHandler.getUser(userName);
+
+            // update replacements...
+            this.rpl_user.setValue(userName);
+            this.rpl_token.setValue(user.getToken());
+
+            // autoreplace...
+            return this.template.autoReplace(this.rpl_navigation, this.rpl_user, this.rpl_token);
+        } else {
+            throw new LoginInvalidException();
+        }
+    }
 }

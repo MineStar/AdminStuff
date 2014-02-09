@@ -20,53 +20,53 @@ package de.minestar.AdminStuff.data;
 
 public enum Time {
 
-	// @formatter:off
+    // @formatter:off
 	DAY("day", 0), TAG("tag", 0), NIGHT("night", 13000), NACHT("nacht", 13000);
 	// @formatter:on
 
-	private String name;
-	private int dateTime;
+    private String name;
+    private int dateTime;
 
-	private Time(String name, int dateTime) {
-		this.name = name;
-		this.dateTime = dateTime;
-	}
+    private Time(String name, int dateTime) {
+        this.name = name;
+        this.dateTime = dateTime;
+    }
 
-	public int getDateTime() {
-		return dateTime;
-	}
+    public int getDateTime() {
+        return dateTime;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 
-	public static Time getTime(String timeName) {
-		timeName = timeName.toLowerCase();
-		for (Time t : values()) {
-			if (t.getName().equals(timeName))
-				return t;
-		}
+    public static Time getTime(String timeName) {
+        timeName = timeName.toLowerCase();
+        for (Time t : values()) {
+            if (t.getName().equals(timeName))
+                return t;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public static String possibleNames() {
-		Time[] times = values();
-		if (times.length == 0)
-			return "Es existieren keine Zeiten!";
+    public static String possibleNames() {
+        Time[] times = values();
+        if (times.length == 0)
+            return "Es existieren keine Zeiten!";
 
-		StringBuilder sBuilder = new StringBuilder(256);
-		int i = 0;
-		for (; i < times.length - 1; ++i) {
-			sBuilder.append(times[i]);
-			sBuilder.append(',');
-		}
-		sBuilder.append(times[i]);
-		return sBuilder.toString();
-	}
+        StringBuilder sBuilder = new StringBuilder(256);
+        int i = 0;
+        for (; i < times.length - 1; ++i) {
+            sBuilder.append(times[i]);
+            sBuilder.append(',');
+        }
+        sBuilder.append(times[i]);
+        return sBuilder.toString();
+    }
 }

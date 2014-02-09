@@ -38,72 +38,63 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdBan extends AbstractExtendedCommand {
 
-	public cmdBan(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdBan(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	public void execute(String[] args, Player player) {
-		banPlayer(args, player);
-	}
+    @Override
+    public void execute(String[] args, Player player) {
+        banPlayer(args, player);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		banPlayer(args, console);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        banPlayer(args, console);
+    }
 
-	private void banPlayer(String[] args, CommandSender sender) {
-		String playerName = args[0];
-		Player target = PlayerUtils.getOnlinePlayer(playerName);
-		// player is online
-		if (target != null)
-			playerName = target.getName();
-		else {
-			// player is maybe offline?
-			playerName = PlayerUtils.getOfflinePlayerName(playerName);
-			// player was never on the server
-			if (playerName == null) {
-				playerName = args[0];
-				ChatUtils
-						.writeError(
-								sender,
-								pluginName,
-								"Spieler '"
-										+ playerName
-										+ "' existiert nicht, wird dennoch praeventiv gebannt!");
-			}
-			// player is offline
-			ChatUtils.writeInfo(sender, pluginName, "Spieler '" + playerName
-					+ "' ist nicht online, wird dennoch gebannt!");
-		}
+    private void banPlayer(String[] args, CommandSender sender) {
+        String playerName = args[0];
+        Player target = PlayerUtils.getOnlinePlayer(playerName);
+        // player is online
+        if (target != null)
+            playerName = target.getName();
+        else {
+            // player is maybe offline?
+            playerName = PlayerUtils.getOfflinePlayerName(playerName);
+            // player was never on the server
+            if (playerName == null) {
+                playerName = args[0];
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + playerName + "' existiert nicht, wird dennoch praeventiv gebannt!");
+            }
+            // player is offline
+            ChatUtils.writeInfo(sender, pluginName, "Spieler '" + playerName + "' ist nicht online, wird dennoch gebannt!");
+        }
 
-		String reason = null;
-		if (args.length > 1)
-			reason = ChatUtils.getMessage(args, 1);
-		else
-			reason = "Permanenter Bann";
+        String reason = null;
+        if (args.length > 1)
+            reason = ChatUtils.getMessage(args, 1);
+        else
+            reason = "Permanenter Bann";
 
-		ban(sender, playerName, reason);
+        ban(sender, playerName, reason);
 
-		if (target != null) {
-			target.setBanned(true);
-			target.kickPlayer(reason);
-		}
+        if (target != null) {
+            target.setBanned(true);
+            target.kickPlayer(reason);
+        }
 
-		ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + playerName
-				+ "' wurde gebannt!");
-	}
+        ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + playerName + "' wurde gebannt!");
+    }
 
-	private void ban(CommandSender sender, String playerName, String reason) {
-		// MINECRAFT HACK
+    private void ban(CommandSender sender, String playerName, String reason) {
+        // MINECRAFT HACK
 
-		// CREATE BAN ENTRY
-		BanEntry banEntry = new BanEntry(playerName);
-		banEntry.setCreated(new Date());
-		banEntry.setSource(sender.getName());
-		banEntry.setReason(reason);
+        // CREATE BAN ENTRY
+        BanEntry banEntry = new BanEntry(playerName);
+        banEntry.setCreated(new Date());
+        banEntry.setSource(sender.getName());
+        banEntry.setReason(reason);
 
-		((CraftServer) Bukkit.getServer()).getHandle().getNameBans()
-				.add(banEntry);
-	}
+        ((CraftServer) Bukkit.getServer()).getHandle().getNameBans().add(banEntry);
+    }
 }

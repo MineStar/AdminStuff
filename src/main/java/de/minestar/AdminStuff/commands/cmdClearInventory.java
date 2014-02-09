@@ -29,49 +29,41 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdClearInventory extends AbstractExtendedCommand {
 
-	public cmdClearInventory(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdClearInventory(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /clearinventory <br>
-	 * This clears your inventory
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		// delete own inventory
-		if (args.length == 0) {
-			player.getInventory().clear();
-			PlayerUtils.sendSuccess(player, pluginName, "Inventar geleert");
+    @Override
+    /**
+     * Representing the command <br>
+     * /clearinventory <br>
+     * This clears your inventory
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        // delete own inventory
+        if (args.length == 0) {
+            player.getInventory().clear();
+            PlayerUtils.sendSuccess(player, pluginName, "Inventar geleert");
 
-		}
-		// delete other's inventory
-		else if (args.length == 1
-				&& checkSpecialPermission(player,
-						"commands.admin.clearinventoryother")) {
+        }
+        // delete other's inventory
+        else if (args.length == 1 && checkSpecialPermission(player, "commands.admin.clearinventoryother")) {
 
-			Player target = PlayerUtils.getOnlinePlayer(args[0]);
-			if (target == null)
-				PlayerUtils.sendError(player, pluginName, "Spieler '" + args[0]
-						+ "' nicht gefunden oder offline!");
-			else if (target.isDead() || !target.isOnline())
-				PlayerUtils.sendError(player, pluginName,
-						"Spieler '" + target.getName()
-								+ "' ist offline oder tot!");
-			else {
-				target.getInventory().clear();
-				PlayerUtils.sendSuccess(player, pluginName,
-						"Das Inventar von '" + target.getName()
-								+ "' wurde geleert!");
-				PlayerUtils.sendInfo(target, pluginName,
-						"Dein Inventar wurde geleert!");
-			}
-		} else
-			PlayerUtils.sendError(player, pluginName, getHelpMessage());
-	}
+            Player target = PlayerUtils.getOnlinePlayer(args[0]);
+            if (target == null)
+                PlayerUtils.sendError(player, pluginName, "Spieler '" + args[0] + "' nicht gefunden oder offline!");
+            else if (target.isDead() || !target.isOnline())
+                PlayerUtils.sendError(player, pluginName, "Spieler '" + target.getName() + "' ist offline oder tot!");
+            else {
+                target.getInventory().clear();
+                PlayerUtils.sendSuccess(player, pluginName, "Das Inventar von '" + target.getName() + "' wurde geleert!");
+                PlayerUtils.sendInfo(target, pluginName, "Dein Inventar wurde geleert!");
+            }
+        } else
+            PlayerUtils.sendError(player, pluginName, getHelpMessage());
+    }
 }

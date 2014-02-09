@@ -29,21 +29,21 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdPing extends AbstractCommand {
 
-	public cmdPing(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdPing(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /ping<br>
-	 * Ping!
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		PlayerUtils.sendInfo(player, pluginName, "*PONG*");
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /ping<br>
+     * Ping!
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        PlayerUtils.sendInfo(player, pluginName, "*PONG*");
+    }
 }

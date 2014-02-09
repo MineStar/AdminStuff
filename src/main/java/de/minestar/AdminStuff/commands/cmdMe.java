@@ -33,24 +33,23 @@ import de.minestar.minestarlibrary.utils.ChatUtils;
 
 public class cmdMe extends AbstractExtendedCommand {
 
-	public cmdMe(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdMe(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /me<Message><br>
-	 * Shout out your mood
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+    @Override
+    /**
+     * Representing the command <br>
+     * /me<Message><br>
+     * Shout out your mood
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
 
-		Bukkit.broadcastMessage(ChatColor.WHITE + " * " + mPlayer.getNickName()
-				+ " " + ChatUtils.getMessage(args));
-	}
+        Bukkit.broadcastMessage(ChatColor.WHITE + " * " + mPlayer.getNickName() + " " + ChatUtils.getMessage(args));
+    }
 }

@@ -38,72 +38,64 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdFlash extends AbstractExtendedCommand {
 
-	// @formatter:off
+    // @formatter:off
 	private static final String[] messages = { "Eat my Shorts, %s",
 			"%s This...is...SPARTA!", "%s! SO EIN Feuerball!",
 			"%s wurde geblitzt", "It's over 9000!!!" };
 	// @formatter:on
 
-	private final Random rand = new Random();
+    private final Random rand = new Random();
 
-	public cmdFlash(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdFlash(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /flash<br>
-	 * Strikes a lightning at the last pointed location
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		if (args.length == 0) {
-			Location strikeLocation = player.getLastTwoTargetBlocks(null, 50)
-					.get(0).getLocation();
-			if (strikeLocation != null)
-				player.getWorld().strikeLightning(strikeLocation);
-		} else
-			flashPlayer(args, player);
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /flash<br>
+     * Strikes a lightning at the last pointed location
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        if (args.length == 0) {
+            Location strikeLocation = player.getLastTwoTargetBlocks(null, 50).get(0).getLocation();
+            if (strikeLocation != null)
+                player.getWorld().strikeLightning(strikeLocation);
+        } else
+            flashPlayer(args, player);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		if (args.length == 0)
-			ConsoleUtils
-					.printError(pluginName,
-							"You can't unleash a flash at the position your are sitting!");
-		else
-			flashPlayer(args, console);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        if (args.length == 0)
+            ConsoleUtils.printError(pluginName, "You can't unleash a flash at the position your are sitting!");
+        else
+            flashPlayer(args, console);
+    }
 
-	private void flashPlayer(String[] targetNames, CommandSender sender) {
+    private void flashPlayer(String[] targetNames, CommandSender sender) {
 
-		Player target = null;
-		for (String name : targetNames) {
-			target = PlayerUtils.getOnlinePlayer(name);
-			if (target == null)
-				ChatUtils.writeError(sender, pluginName, "Spieler '" + name
-						+ "' wurde nicht gefunden!");
-			else if (target.isDead() || !target.isOnline())
-				ChatUtils.writeError(sender, pluginName,
-						"Spieler '" + target.getName()
-								+ "' ist tot oder offline!");
-			else {
-				target.getInventory().clear();
-				target.getWorld().strikeLightning(target.getLocation());
-				target.damage(9001.0);
-				Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE
-						+ getRandomMessage(target.getName()));
-			}
-		}
-	}
+        Player target = null;
+        for (String name : targetNames) {
+            target = PlayerUtils.getOnlinePlayer(name);
+            if (target == null)
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + name + "' wurde nicht gefunden!");
+            else if (target.isDead() || !target.isOnline())
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + target.getName() + "' ist tot oder offline!");
+            else {
+                target.getInventory().clear();
+                target.getWorld().strikeLightning(target.getLocation());
+                target.damage(9001.0);
+                Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + getRandomMessage(target.getName()));
+            }
+        }
+    }
 
-	private String getRandomMessage(String targetName) {
-		return String.format(messages[rand.nextInt(messages.length)],
-				targetName);
-	}
+    private String getRandomMessage(String targetName) {
+        return String.format(messages[rand.nextInt(messages.length)], targetName);
+    }
 }

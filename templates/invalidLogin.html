@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <link rel="stylesheet" media="all" href="styles.css">
+</head>
+<body>
+    <div id="wrap">
+        <div id="header"></div>
+        <div id="sidebar">
+            {NAVIGATION}
+        </div>
+        <div id="main">
+            <div id="content_spacer"></div>
+            <div id="content_topic_error">Login fehlgeschlagen!</div>    
+            <div id="content_spacer"></div>
+            
+            <div id="content_topic">Login</div>            
+            <div id="content_frame">
+            <form method="POST" action="doLogin.html">
+            	<input type="text" width="150" name="txt_username"><br>
+            	<input type="text" width="150" name="txt_password"><br>
+            	<input type="submit" value="Login"></input>
+            </form>
+            </div>                 
+            
+            <div id="content_spacer"></div>
+        </div>
+        <div id="footer"></div>
+    </div>
+</body>
+</html>

@@ -33,49 +33,43 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdReply extends AbstractExtendedCommand {
 
-	public cmdReply(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdReply(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /r <Message><br>
-	 * Reply a player
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
-		String lastSender = mPlayer.getString("adminstuff.lastsender");
-		if (lastSender == null) {
-			PlayerUtils.sendError(player, pluginName,
-					"Du hast keinen Spieler, dem du antworten kannst...");
-			return;
-		}
+    @Override
+    /**
+     * Representing the command <br>
+     * /r <Message><br>
+     * Reply a player
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+        String lastSender = mPlayer.getString("adminstuff.lastsender");
+        if (lastSender == null) {
+            PlayerUtils.sendError(player, pluginName, "Du hast keinen Spieler, dem du antworten kannst...");
+            return;
+        }
 
-		Player target = PlayerUtils.getOnlinePlayer(lastSender);
-		if (target == null)
-			PlayerUtils.sendError(player, pluginName, "Spieler '" + lastSender
-					+ "' wurde nicht gefunden!");
-		else if (!target.isOnline())
-			PlayerUtils.sendError(player, pluginName,
-					"Spieler '" + target.getName() + "' ist nicht online!");
-		else {
+        Player target = PlayerUtils.getOnlinePlayer(lastSender);
+        if (target == null)
+            PlayerUtils.sendError(player, pluginName, "Spieler '" + lastSender + "' wurde nicht gefunden!");
+        else if (!target.isOnline())
+            PlayerUtils.sendError(player, pluginName, "Spieler '" + target.getName() + "' ist nicht online!");
+        else {
 
-			MinestarPlayer mTarget = MinestarCore.getPlayer(target);
+            MinestarPlayer mTarget = MinestarCore.getPlayer(target);
 
-			String message = "] : " + ChatColor.GRAY
-					+ ChatUtils.getMessage(args);
-			PlayerUtils.sendBlankMessage(player, ChatColor.GOLD + "[ me -> "
-					+ mTarget.getNickName() + message);
-			PlayerUtils.sendBlankMessage(target, ChatColor.GOLD + "[ "
-					+ mPlayer.getNickName() + " -> me" + message);
+            String message = "] : " + ChatColor.GRAY + ChatUtils.getMessage(args);
+            PlayerUtils.sendBlankMessage(player, ChatColor.GOLD + "[ me -> " + mTarget.getNickName() + message);
+            PlayerUtils.sendBlankMessage(target, ChatColor.GOLD + "[ " + mPlayer.getNickName() + " -> me" + message);
 
-			mPlayer.setString("adminstuff.lastsender", target.getName());
-			mTarget.setString("adminstuff.lastsender", player.getName());
-		}
-	}
+            mPlayer.setString("adminstuff.lastsender", target.getName());
+            mTarget.setString("adminstuff.lastsender", player.getName());
+        }
+    }
 }

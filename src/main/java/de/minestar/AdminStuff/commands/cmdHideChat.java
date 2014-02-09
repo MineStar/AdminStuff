@@ -31,35 +31,33 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdHideChat extends AbstractCommand {
 
-	public cmdHideChat(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdHideChat(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /hidechat <br>
-	 * Toggle HideChat-Status
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
+    @Override
+    /**
+     * Representing the command <br>
+     * /hidechat <br>
+     * Toggle HideChat-Status
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
 
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
-		Boolean hideChat = mPlayer.getBoolean("adminstuff.hidechat");
-		if (hideChat != null && !hideChat)
-			hideChat = true;
-		else
-			hideChat = false;
-		mPlayer.setBoolean("adminstuff.hidechat", hideChat);
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+        Boolean hideChat = mPlayer.getBoolean("adminstuff.hidechat");
+        if (hideChat != null && !hideChat)
+            hideChat = true;
+        else
+            hideChat = false;
+        mPlayer.setBoolean("adminstuff.hidechat", hideChat);
 
-		if (hideChat)
-			PlayerUtils.sendSuccess(player, pluginName,
-					"Der Chat ist jetzt verborgen!");
-		else
-			PlayerUtils.sendSuccess(player, pluginName,
-					"Der Chat ist wieder sichtbar!");
-	}
+        if (hideChat)
+            PlayerUtils.sendSuccess(player, pluginName, "Der Chat ist jetzt verborgen!");
+        else
+            PlayerUtils.sendSuccess(player, pluginName, "Der Chat ist wieder sichtbar!");
+    }
 }

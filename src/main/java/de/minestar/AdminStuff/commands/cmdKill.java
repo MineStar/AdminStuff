@@ -33,58 +33,53 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdKill extends AbstractCommand {
 
-	public cmdKill(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdKill(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /kill <Player><br>
-	 * Kills the Player and clears the inventory
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the targets name
-	 */
-	public void execute(String[] args, Player player) {
-		// kill yourself
-		if (args.length == 0)
-			killPlayer(player, player);
-		else
-			killPlayers(args, player);
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /kill <Player><br>
+     * Kills the Player and clears the inventory
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     *            split[0] is the targets name
+     */
+    public void execute(String[] args, Player player) {
+        // kill yourself
+        if (args.length == 0)
+            killPlayer(player, player);
+        else
+            killPlayers(args, player);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		if (args.length == 0)
-			ConsoleUtils.printError(pluginName,
-					"If you want kill yourself, press ALT+F4");
-		else
-			killPlayers(args, console);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        if (args.length == 0)
+            ConsoleUtils.printError(pluginName, "If you want kill yourself, press ALT+F4");
+        else
+            killPlayers(args, console);
+    }
 
-	private void killPlayers(String[] targetNames, CommandSender sender) {
-		Player target = null;
-		for (String targetName : targetNames) {
-			target = PlayerUtils.getOnlinePlayer(targetName);
-			if (target == null)
-				ChatUtils.writeError(sender, pluginName, "Spieler '"
-						+ targetName + "' wurde nicht gefunden!");
-			else if (target.isDead() || !target.isOnline())
-				ChatUtils.writeError(sender, pluginName,
-						"Spieler '" + target.getName()
-								+ "' ist tot oder nicht online!");
-			else
-				killPlayer(target, sender);
-		}
-	}
+    private void killPlayers(String[] targetNames, CommandSender sender) {
+        Player target = null;
+        for (String targetName : targetNames) {
+            target = PlayerUtils.getOnlinePlayer(targetName);
+            if (target == null)
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
+            else if (target.isDead() || !target.isOnline())
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + target.getName() + "' ist tot oder nicht online!");
+            else
+                killPlayer(target, sender);
+        }
+    }
 
-	private void killPlayer(Player player, CommandSender sender) {
-		player.getInventory().clear();
-		player.damage(100.0);
-		ChatUtils.writeSuccess(sender, pluginName,
-				"Spieler '" + player.getName() + "' wurde getoetet!");
-	}
+    private void killPlayer(Player player, CommandSender sender) {
+        player.getInventory().clear();
+        player.damage(100.0);
+        ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + player.getName() + "' wurde getoetet!");
+    }
 }

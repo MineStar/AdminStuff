@@ -34,58 +34,53 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdInvsee extends AbstractExtendedCommand {
 
-	private Map<Player, ItemStack[]> backup = new HashMap<Player, ItemStack[]>();
+    private Map<Player, ItemStack[]> backup = new HashMap<Player, ItemStack[]>();
 
-	public cmdInvsee(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdInvsee(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /invsee<br>
-	 * Show your own inventory
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		if (args.length == 0) {
-			ItemStack[] items = backup.remove(player);
-			if (items == null)
-				PlayerUtils.sendError(player, pluginName,
-						"Du hast kein Inventar zum Wiederherstellen!");
-			else {
-				player.getInventory().clear();
-				player.getInventory().setContents(items);
-				PlayerUtils.sendSuccess(player, pluginName,
-						"Dein Inventar wurde wiederhergestellt!");
-			}
+    @Override
+    /**
+     * Representing the command <br>
+     * /invsee<br>
+     * Show your own inventory
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        if (args.length == 0) {
+            ItemStack[] items = backup.remove(player);
+            if (items == null)
+                PlayerUtils.sendError(player, pluginName, "Du hast kein Inventar zum Wiederherstellen!");
+            else {
+                player.getInventory().clear();
+                player.getInventory().setContents(items);
+                PlayerUtils.sendSuccess(player, pluginName, "Dein Inventar wurde wiederhergestellt!");
+            }
 
-		} else if (args.length == 1) {
-			String targetName = args[0];
-			Player target = PlayerUtils.getOnlinePlayer(targetName);
-			if (target == null)
-				PlayerUtils.sendError(player, pluginName, "Spieler '"
-						+ targetName + "' wurde nicht gefunden!");
-			else if (target.isDead() || !target.isOnline())
-				PlayerUtils.sendError(player, pluginName, "Spieler '"
-						+ targetName + "' ist tot oder nicht online!");
-			else {
-				Inventory inv = player.getInventory();
-				// backup current inventory
-				backup.put(player, inv.getContents());
+        } else if (args.length == 1) {
+            String targetName = args[0];
+            Player target = PlayerUtils.getOnlinePlayer(targetName);
+            if (target == null)
+                PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
+            else if (target.isDead() || !target.isOnline())
+                PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist tot oder nicht online!");
+            else {
+                Inventory inv = player.getInventory();
+                // backup current inventory
+                backup.put(player, inv.getContents());
 
-				inv.clear();
+                inv.clear();
 
-				// copy inventory
-				inv.setContents(target.getInventory().getContents());
+                // copy inventory
+                inv.setContents(target.getInventory().getContents());
 
-				PlayerUtils.sendSuccess(player, pluginName,
-						"Zeige dir das Inventar von  '" + targetName + "'");
-			}
-		} else
-			PlayerUtils.sendError(player, pluginName, getHelpMessage());
-	}
+                PlayerUtils.sendSuccess(player, pluginName, "Zeige dir das Inventar von  '" + targetName + "'");
+            }
+        } else
+            PlayerUtils.sendError(player, pluginName, getHelpMessage());
+    }
 }

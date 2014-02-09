@@ -29,21 +29,21 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdDifficulty extends AbstractExtendedCommand {
 
-	public cmdDifficulty(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdDifficulty(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /me<Message><br>
-	 * Shout out your mood
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		PlayerUtils.sendError(player, Core.NAME, "Command blocked!");
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /me<Message><br>
+     * Shout out your mood
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        PlayerUtils.sendError(player, Core.NAME, "Command blocked!");
+    }
 }

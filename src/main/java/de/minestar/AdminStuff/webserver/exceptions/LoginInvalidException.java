@@ -20,6 +20,6 @@ package de.minestar.AdminStuff.webserver.exceptions;
 
 public class LoginInvalidException extends Exception {
 
-	private static final long serialVersionUID = 7320072646216068128L;
+    private static final long serialVersionUID = 7320072646216068128L;
 
 }

@@ -36,63 +36,56 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdNickname extends AbstractExtendedCommand {
 
-	private PlayerManager pManager;
+    private PlayerManager pManager;
 
-	public cmdNickname(String syntax, String arguments, String node,
-			PlayerManager pManager) {
-		super(Core.NAME, syntax, arguments, node);
-		this.pManager = pManager;
-	}
+    public cmdNickname(String syntax, String arguments, String node, PlayerManager pManager) {
+        super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /nickname <Name> <br>
-	 * Set the nickname
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 * 		  split[0] is the nickname
-	 */
-	public void execute(String[] args, Player player) {
-		// change own nickname
-		if (args.length == 1)
-			changeNickname(args[0], player, player);
-		// change others nickname
-		else
-			changeNickname(args[0], args[1], player);
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /nickname <Name> <br>
+     * Set the nickname
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     * 		  split[0] is the nickname
+     */
+    public void execute(String[] args, Player player) {
+        // change own nickname
+        if (args.length == 1)
+            changeNickname(args[0], player, player);
+        // change others nickname
+        else
+            changeNickname(args[0], args[1], player);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		if (args.length == 1)
-			ConsoleUtils.printError(pluginName,
-					"You cannot change the nickname of the console!");
-		else
-			changeNickname(args[0], args[1], console);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        if (args.length == 1)
+            ConsoleUtils.printError(pluginName, "You cannot change the nickname of the console!");
+        else
+            changeNickname(args[0], args[1], console);
+    }
 
-	private void changeNickname(String targetName, String name,
-			CommandSender sender) {
-		Player target = PlayerUtils.getOnlinePlayer(targetName);
-		if (target == null)
-			ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName
-					+ "' wurde nicht gefunden!");
-		else if (!target.isOnline())
-			ChatUtils.writeError(sender, pluginName,
-					"Spieler '" + target.getName() + "' ist nicht online!");
-		else
-			changeNickname(name, target, sender);
-	}
+    private void changeNickname(String targetName, String name, CommandSender sender) {
+        Player target = PlayerUtils.getOnlinePlayer(targetName);
+        if (target == null)
+            ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
+        else if (!target.isOnline())
+            ChatUtils.writeError(sender, pluginName, "Spieler '" + target.getName() + "' ist nicht online!");
+        else
+            changeNickname(name, target, sender);
+    }
 
-	private void changeNickname(String name, Player player, CommandSender sender) {
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
-		mPlayer.setNickName(name);
-		pManager.updatePrefix(mPlayer);
-		PlayerUtils.sendInfo(player, pluginName, "Dein Nickname ist jetzt '"
-				+ name + "'!");
-		ChatUtils.writeSuccess(sender, pluginName, "Der Nickname von '"
-				+ player.getName() + "' ist '" + name + "'!");
-	}
+    private void changeNickname(String name, Player player, CommandSender sender) {
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+        mPlayer.setNickName(name);
+        pManager.updatePrefix(mPlayer);
+        PlayerUtils.sendInfo(player, pluginName, "Dein Nickname ist jetzt '" + name + "'!");
+        ChatUtils.writeSuccess(sender, pluginName, "Der Nickname von '" + player.getName() + "' ist '" + name + "'!");
+    }
 }

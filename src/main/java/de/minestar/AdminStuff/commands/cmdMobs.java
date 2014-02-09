@@ -28,20 +28,17 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdMobs extends AbstractCommand {
 
-	public cmdMobs(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-		this.description = "Monster zählen";
-	}
+    public cmdMobs(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+        this.description = "Monster zählen";
+    }
 
-	@Override
-	public void execute(String[] args, Player player) {
-		int animalCount = player.getWorld().getEntitiesByClass(Animals.class)
-				.size();
-		int mobCount = player.getWorld().getEntitiesByClass(Monster.class)
-				.size();
-		PlayerUtils.sendInfo(player, pluginName, "Mobs in world '"
-				+ player.getWorld().getName() + "'");
-		PlayerUtils.sendInfo(player, "Friendly: " + animalCount);
-		PlayerUtils.sendInfo(player, "Hostile: " + mobCount);
-	}
+    @Override
+    public void execute(String[] args, Player player) {
+        int animalCount = player.getWorld().getEntitiesByClass(Animals.class).size();
+        int mobCount = player.getWorld().getEntitiesByClass(Monster.class).size();
+        PlayerUtils.sendInfo(player, pluginName, "Mobs in world '" + player.getWorld().getName() + "'");
+        PlayerUtils.sendInfo(player, "Friendly: " + animalCount);
+        PlayerUtils.sendInfo(player, "Hostile: " + mobCount);
+    }
 }

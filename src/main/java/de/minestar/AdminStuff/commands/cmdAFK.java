@@ -33,43 +33,42 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdAFK extends AbstractCommand {
 
-	private PlayerManager pManager;
+    private PlayerManager pManager;
 
-	public cmdAFK(String syntax, String arguments, String node,
-			PlayerManager pManager) {
-		super(Core.NAME, syntax, arguments, node);
-		this.pManager = pManager;
-	}
+    public cmdAFK(String syntax, String arguments, String node, PlayerManager pManager) {
+        super(Core.NAME, syntax, arguments, node);
+        this.pManager = pManager;
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /afk <br>
-	 * Toggle AFK-status
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
+    @Override
+    /**
+     * Representing the command <br>
+     * /afk <br>
+     * Toggle AFK-status
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
 
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
-		Boolean isAFK = mPlayer.getBoolean("adminstuff.afk");
-		if (isAFK == null || !isAFK)
-			isAFK = true;
-		else
-			isAFK = false;
-		mPlayer.setBoolean("adminstuff.afk", isAFK);
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(player);
+        Boolean isAFK = mPlayer.getBoolean("adminstuff.afk");
+        if (isAFK == null || !isAFK)
+            isAFK = true;
+        else
+            isAFK = false;
+        mPlayer.setBoolean("adminstuff.afk", isAFK);
 
-		if (isAFK) {
-			Bukkit.broadcastMessage(player.getDisplayName() + " ist AFK");
-			PlayerUtils.sendInfo(player, pluginName, "Du bist jetzt AFK");
-			pManager.updatePrefix(mPlayer);
-		} else {
-			pManager.updatePrefix(mPlayer);
-			Bukkit.broadcastMessage(player.getDisplayName() + " ist wieder da");
-			PlayerUtils.sendInfo(player, pluginName, "Willkommen zurueck :)");
-		}
+        if (isAFK) {
+            Bukkit.broadcastMessage(player.getDisplayName() + " ist AFK");
+            PlayerUtils.sendInfo(player, pluginName, "Du bist jetzt AFK");
+            pManager.updatePrefix(mPlayer);
+        } else {
+            pManager.updatePrefix(mPlayer);
+            Bukkit.broadcastMessage(player.getDisplayName() + " ist wieder da");
+            PlayerUtils.sendInfo(player, pluginName, "Willkommen zurueck :)");
+        }
 
-	}
+    }
 }

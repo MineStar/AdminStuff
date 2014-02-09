@@ -31,36 +31,35 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdKickAll extends AbstractExtendedCommand {
 
-	public cmdKickAll(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdKickAll(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /kickall<br>
-	 * Kick all players
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		Player[] allPlayers = Bukkit.getOnlinePlayers();
-		String msg = getMessage(args);
-		for (Player kPlayer : allPlayers) {
-			if (!kPlayer.equals(player))
-				kPlayer.kickPlayer(msg);
-		}
-		PlayerUtils.sendSuccess(player, pluginName,
-				"Alle anderen Spieler wurden gekickt!");
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /kickall<br>
+     * Kick all players
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        Player[] allPlayers = Bukkit.getOnlinePlayers();
+        String msg = getMessage(args);
+        for (Player kPlayer : allPlayers) {
+            if (!kPlayer.equals(player))
+                kPlayer.kickPlayer(msg);
+        }
+        PlayerUtils.sendSuccess(player, pluginName, "Alle anderen Spieler wurden gekickt!");
+    }
 
-	private String getMessage(String[] args) {
-		// no message was given
-		if (args.length == 1)
-			return "Du wurdest gekickt.";
+    private String getMessage(String[] args) {
+        // no message was given
+        if (args.length == 1)
+            return "Du wurdest gekickt.";
 
-		return ChatUtils.getMessage(args, " ", 1);
-	}
+        return ChatUtils.getMessage(args, " ", 1);
+    }
 }

@@ -30,31 +30,29 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdTime extends AbstractCommand {
 
-	public cmdTime(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdTime(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /time day|night <br>
-	 * This changes the worldtime
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the time
-	 */
-	public void execute(String[] args, Player player) {
-		Time time = Time.getTime(args[0]);
-		if (time == null) {
-			PlayerUtils.sendError(player, pluginName,
-					"Falscher Paramater! Benutze einen der folgenden:");
-			PlayerUtils.sendInfo(player, Time.possibleNames());
-		} else {
-			player.getWorld().setTime(time.getDateTime());
-			PlayerUtils.sendSuccess(player, pluginName,
-					"Zeit in deiner Welt gesetzt auf " + time);
-		}
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /time day|night <br>
+     * This changes the worldtime
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     *            split[0] is the time
+     */
+    public void execute(String[] args, Player player) {
+        Time time = Time.getTime(args[0]);
+        if (time == null) {
+            PlayerUtils.sendError(player, pluginName, "Falscher Paramater! Benutze einen der folgenden:");
+            PlayerUtils.sendInfo(player, Time.possibleNames());
+        } else {
+            player.getWorld().setTime(time.getDateTime());
+            PlayerUtils.sendSuccess(player, pluginName, "Zeit in deiner Welt gesetzt auf " + time);
+        }
+    }
 }

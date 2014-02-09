@@ -34,53 +34,50 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdSeen extends AbstractCommand {
 
-	public cmdSeen(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdSeen(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /seen <Player><br>
-	 * Show the LastSeen-Date
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the targets name
-	 */
-	public void execute(String[] args, Player player) {
-		getSeen(args[0], player);
+    @Override
+    /**
+     * Representing the command <br>
+     * /seen <Player><br>
+     * Show the LastSeen-Date
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     *            split[0] is the targets name
+     */
+    public void execute(String[] args, Player player) {
+        getSeen(args[0], player);
 
-	}
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		getSeen(args[0], console);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        getSeen(args[0], console);
+    }
 
-	private void getSeen(String targetName, CommandSender sender) {
-		// is player online?
-		Player player = PlayerUtils.getOnlinePlayer(targetName);
-		if (player != null) {
-			ChatUtils.writeInfo(sender, targetName,
-					"Spieler '" + player.getName() + "' ist gerade online!");
-			return;
-		}
-		// looking for offline player
-		String correct = PlayerUtils.getOfflinePlayerName(targetName);
-		if (correct == null)
-			ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName
-					+ "' wurde nicht gefunden!");
-		else {
-			MinestarPlayer mPlayer = MinestarCore.getPlayer(correct);
-			String seen = mPlayer.getString("adminstuff.lastseen");
-			if (seen == null) {
-				seen = "Niemals";
-				mPlayer.setString("adminstuff.lastseen", seen);
-			}
-			ChatUtils.writeInfo(sender, pluginName, "Spieler '" + correct
-					+ "' wurde zuletzt " + seen + " gesehen!");
-		}
-	}
+    private void getSeen(String targetName, CommandSender sender) {
+        // is player online?
+        Player player = PlayerUtils.getOnlinePlayer(targetName);
+        if (player != null) {
+            ChatUtils.writeInfo(sender, targetName, "Spieler '" + player.getName() + "' ist gerade online!");
+            return;
+        }
+        // looking for offline player
+        String correct = PlayerUtils.getOfflinePlayerName(targetName);
+        if (correct == null)
+            ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
+        else {
+            MinestarPlayer mPlayer = MinestarCore.getPlayer(correct);
+            String seen = mPlayer.getString("adminstuff.lastseen");
+            if (seen == null) {
+                seen = "Niemals";
+                mPlayer.setString("adminstuff.lastseen", seen);
+            }
+            ChatUtils.writeInfo(sender, pluginName, "Spieler '" + correct + "' wurde zuletzt " + seen + " gesehen!");
+        }
+    }
 }

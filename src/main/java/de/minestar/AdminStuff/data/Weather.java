@@ -20,7 +20,7 @@ package de.minestar.AdminStuff.data;
 
 public enum Weather {
 
-	// @formatter:off
+    // @formatter:off
 	SUN("sun", false, false), SONNE("sonne", false, false), RAIN("rain", true,
 			false), REGEN("regen", true, false), STORM("storm", true, true), STURM(
 			"sturm", true, true),
@@ -29,53 +29,53 @@ public enum Weather {
 	STRANGE("strange", false, true), SELTSAM("seltsam", false, true);
 	// @formatter:on
 
-	private String name;
-	private boolean isStorming;
-	private boolean isThundering;
+    private String name;
+    private boolean isStorming;
+    private boolean isThundering;
 
-	private Weather(String name, boolean isStorming, boolean isThundering) {
-		this.name = name;
-		this.isStorming = isStorming;
-		this.isThundering = isThundering;
-	}
+    private Weather(String name, boolean isStorming, boolean isThundering) {
+        this.name = name;
+        this.isStorming = isStorming;
+        this.isThundering = isThundering;
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public boolean isStorming() {
-		return isStorming;
-	}
+    public boolean isStorming() {
+        return isStorming;
+    }
 
-	public boolean isThundering() {
-		return isThundering;
-	}
+    public boolean isThundering() {
+        return isThundering;
+    }
 
-	public static Weather getWeather(String weatherName) {
-		weatherName = weatherName.toLowerCase();
-		for (Weather weather : values())
-			if (weather.getName().equals(weatherName))
-				return weather;
-		return null;
-	}
+    public static Weather getWeather(String weatherName) {
+        weatherName = weatherName.toLowerCase();
+        for (Weather weather : values())
+            if (weather.getName().equals(weatherName))
+                return weather;
+        return null;
+    }
 
-	public static String possibleNames() {
-		Weather[] weather = values();
-		if (weather.length == 0)
-			return "Es existiert kein Wetter oO";
+    public static String possibleNames() {
+        Weather[] weather = values();
+        if (weather.length == 0)
+            return "Es existiert kein Wetter oO";
 
-		StringBuilder sBuilder = new StringBuilder(256);
-		int i = 0;
-		for (; i < weather.length - 1; ++i) {
-			sBuilder.append(weather[i]);
-			sBuilder.append(',');
-		}
-		sBuilder.append(weather[i]);
-		return sBuilder.toString();
-	}
+        StringBuilder sBuilder = new StringBuilder(256);
+        int i = 0;
+        for (; i < weather.length - 1; ++i) {
+            sBuilder.append(weather[i]);
+            sBuilder.append(',');
+        }
+        sBuilder.append(weather[i]);
+        return sBuilder.toString();
+    }
 }

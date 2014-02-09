@@ -20,15 +20,23 @@ package de.minestar.AdminStuff.webserver.pagehandler;
 
 import com.sun.net.httpserver.HttpExchange;
 
-public class SecurePageHandler extends AbstractHTMLHandler {
+import de.minestar.AdminStuff.webserver.template.Template;
+import de.minestar.AdminStuff.webserver.template.TemplateHandler;
+import de.minestar.AdminStuff.webserver.template.TemplateReplacement;
 
-	public SecurePageHandler(String templateFile) {
-		super(true, templateFile);
-	}
+public class ErrorPageHandler extends AbstractHTMLHandler {
 
-	@Override
-	public String handle(HttpExchange http) {
-		return this.templateString;
-	}
+    private Template template;
+    private TemplateReplacement rpl_navigation;
 
+    public ErrorPageHandler() {
+        super(false);
+        this.template = TemplateHandler.getTemplate("error404");
+        this.rpl_navigation = new TemplateReplacement("NAVIGATION", TemplateHandler.getTemplate("tpl_navi_off").getString());
+    }
+
+    @Override
+    public String handle(HttpExchange http) {
+        return this.template.autoReplace(this.rpl_navigation);
+    }
 }

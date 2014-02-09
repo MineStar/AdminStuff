@@ -33,144 +33,133 @@ import de.minestar.AdminStuff.webserver.units.HandlerList;
 
 public class PageHandler implements HttpHandler {
 
-	private String defaultPage = "/404.html";
-	private String invalidLoginPage = "/invalidLogin.html";
+    private String defaultPage = "/error404.html";
+    private String invalidLoginPage = "/invalidLogin.html";
 
-	@SuppressWarnings("unchecked")
-	public void handle(HttpExchange http) throws IOException {
-		// get pagename
-		String pageName = http.getRequestURI().toString();
+    @SuppressWarnings("unchecked")
+    public void handle(HttpExchange http) throws IOException {
+        // get pagename
+        String pageName = http.getRequestURI().toString();
 
-		// cut off everything after the '?'
-		int index = pageName.indexOf('?');
-		if (index != -1) {
-			pageName = pageName.substring(0, index);
-		}
+        // cut off everything after the '?'
+        int index = pageName.indexOf('?');
+        if (index != -1) {
+            pageName = pageName.substring(0, index);
+        }
 
-		try {
-			if (HandlerList.hasHandler(pageName)) {
-				// get the handler
-				AbstractHTMLHandler handler = HandlerList.getHandler(pageName);
+        try {
+            if (HandlerList.hasHandler(pageName)) {
+                // get the handler
+                AbstractHTMLHandler handler = HandlerList.getHandler(pageName);
 
-				// construct the response...
-				String response = "";
-				if (handler.needsLogin()) {
-					// check if the params username & token are given...
-					Map<String, String> params = (Map<String, String>) http
-							.getAttribute("parameters");
-					String userName = params.get("username");
-					String token = params.get("token");
-					if (userName == null || token == null
-							|| !AuthHandler.isUserLoginValid(userName, token)) {
-						// user is invalid, so display invalid loginpage...
-						response = HandlerList
-								.getHandler(this.invalidLoginPage).handle(http);
-					} else {
-						// update the token
-						AuthHandler.refreshUserToken(userName);
+                // construct the response...
+                String response = "";
+                if (handler.needsLogin()) {
+                    // check if the params username & token are given...
+                    Map<String, String> params = (Map<String, String>) http.getAttribute("parameters");
+                    String userName = params.get("username");
+                    String token = params.get("token");
+                    if (userName == null || token == null || !AuthHandler.isUserLoginValid(userName, token)) {
+                        // user is invalid, so display invalid loginpage...
+                        response = HandlerList.getHandler(this.invalidLoginPage).handle(http);
+                    } else {
+                        // update the token
+                        AuthHandler.refreshUserToken(userName);
 
-						// login is valid, so display...
-						response = HandlerList.getHandler(pageName)
-								.handle(http);
-					}
-				} else {
-					try {
-						// no login needed, just display...
-						response = HandlerList.getHandler(pageName)
-								.handle(http);
-					} catch (LoginInvalidException e) {
-						// this is needed only for the doLogin-page...
-						response = HandlerList
-								.getHandler(this.invalidLoginPage).handle(http);
-					}
-				}
+                        // login is valid, so display...
+                        response = HandlerList.getHandler(pageName).handle(http);
+                    }
+                } else {
+                    try {
+                        // no login needed, just display...
+                        response = HandlerList.getHandler(pageName).handle(http);
+                    } catch (LoginInvalidException e) {
+                        // this is needed only for the doLogin-page...
+                        response = HandlerList.getHandler(this.invalidLoginPage).handle(http);
+                    }
+                }
 
-				// write response
-				http.sendResponseHeaders(200, response.length());
-				OutputStream os = http.getResponseBody();
-				os.write(response.getBytes());
-				os.close();
-			} else {
-				// try to find the file...
-				String fileName = pageName;
-				if (fileName.startsWith("/")) {
-					fileName = fileName.replaceFirst("/", "");
-				}
-				File file = new File("web/" + fileName);
-				// if the file exists, just write it...
-				if (file.exists() && file.isFile()) {
-					// handle incorrect path...
-					byte[] bytes = this.readFile(file);
-					if (bytes != null) {
-						http.sendResponseHeaders(200, bytes.length);
-						OutputStream os = http.getResponseBody();
-						os.write(bytes);
-						os.close();
-						// return is needed, since we don't want to display the
-						// defaultPage
-						return;
-					}
-				}
-				// handle 404
-				String response = HandlerList.getHandler(this.defaultPage)
-						.handle(http);
-				http.sendResponseHeaders(200, response.length());
-				OutputStream os = http.getResponseBody();
-				os.write(response.getBytes());
-				os.close();
-			}
-		} catch (Exception e) {
-			// handle internal errors...
-			e.printStackTrace();
-			String response = "<b>Internal servererror!</b>";
-			http.sendResponseHeaders(200, response.length());
-			OutputStream os = http.getResponseBody();
-			os.write(response.getBytes());
-			os.close();
-		}
-	}
+                // write response
+                http.sendResponseHeaders(200, response.length());
+                OutputStream os = http.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            } else {
+                // try to find the file...
+                String fileName = pageName;
+                if (fileName.startsWith("/")) {
+                    fileName = fileName.replaceFirst("/", "");
+                }
+                File file = new File("web/" + fileName);
+                // if the file exists, just write it...
+                if (file.exists() && file.isFile()) {
+                    // handle incorrect path...
+                    byte[] bytes = this.readFile(file);
+                    if (bytes != null) {
+                        http.sendResponseHeaders(200, bytes.length);
+                        OutputStream os = http.getResponseBody();
+                        os.write(bytes);
+                        os.close();
+                        // return is needed, since we don't want to display the
+                        // defaultPage
+                        return;
+                    }
+                }
+                // handle 404
+                System.out.println(defaultPage);
+                String response = HandlerList.getHandler(this.defaultPage).handle(http);
+                http.sendResponseHeaders(200, response.length());
+                OutputStream os = http.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            }
+        } catch (Exception e) {
+            // handle internal errors...
+            e.printStackTrace();
+            String response = "<b>Internal servererror!</b>";
+            http.sendResponseHeaders(200, response.length());
+            OutputStream os = http.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
 
-	public void setInvalidLoginPage(String invalidLoginPage) {
-		this.invalidLoginPage = invalidLoginPage;
-	}
+    public void setInvalidLoginPage(String invalidLoginPage) {
+        this.invalidLoginPage = invalidLoginPage;
+    }
 
-	public void setDefaultPage(String defaultPage) {
-		this.defaultPage = defaultPage;
-	}
+    public void setDefaultPage(String defaultPage) {
+        this.defaultPage = defaultPage;
+    }
 
-	private byte[] readFile(final File file) {
-		if (file.isDirectory())
-			throw new RuntimeException("Unsupported operation, file "
-					+ file.getAbsolutePath() + " is a directory");
-		if (file.length() > Integer.MAX_VALUE)
-			throw new RuntimeException("Unsupported operation, file "
-					+ file.getAbsolutePath() + " is too big");
+    private byte[] readFile(final File file) {
+        if (file.isDirectory())
+            throw new RuntimeException("Unsupported operation, file " + file.getAbsolutePath() + " is a directory");
+        if (file.length() > Integer.MAX_VALUE)
+            throw new RuntimeException("Unsupported operation, file " + file.getAbsolutePath() + " is too big");
 
-		Throwable pending = null;
-		FileInputStream in = null;
-		final byte buffer[] = new byte[(int) file.length()];
-		try {
-			in = new FileInputStream(file);
-			in.read(buffer);
-		} catch (Exception e) {
-			pending = new RuntimeException("Exception occured on reading file "
-					+ file.getAbsolutePath(), e);
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (Exception e) {
-					if (pending == null) {
-						pending = new RuntimeException(
-								"Exception occured on closing file"
-										+ file.getAbsolutePath(), e);
-					}
-				}
-			}
-			if (pending != null) {
-				throw new RuntimeException(pending);
-			}
-		}
-		return buffer;
-	}
+        Throwable pending = null;
+        FileInputStream in = null;
+        final byte buffer[] = new byte[(int) file.length()];
+        try {
+            in = new FileInputStream(file);
+            in.read(buffer);
+        } catch (Exception e) {
+            pending = new RuntimeException("Exception occured on reading file " + file.getAbsolutePath(), e);
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (Exception e) {
+                    if (pending == null) {
+                        pending = new RuntimeException("Exception occured on closing file" + file.getAbsolutePath(), e);
+                    }
+                }
+            }
+            if (pending != null) {
+                throw new RuntimeException(pending);
+            }
+        }
+        return buffer;
+    }
 }

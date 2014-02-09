@@ -32,32 +32,30 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdListKits extends AbstractCommand {
 
-	private KitManager kManager;
+    private KitManager kManager;
 
-	public cmdListKits(String syntax, String arguments, String node,
-			KitManager kMAnager) {
-		super(Core.NAME, syntax, arguments, node);
-		this.kManager = kMAnager;
-	}
+    public cmdListKits(String syntax, String arguments, String node, KitManager kMAnager) {
+        super(Core.NAME, syntax, arguments, node);
+        this.kManager = kMAnager;
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /listkits <br>
-	 * List all available kits (with permissions)
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		PlayerUtils.sendInfo(player, pluginName, "Kitliste:");
-		int count = 1;
-		Iterable<String> kitNames = kManager.getNames();
-		for (String kitName : kitNames) {
-			if (UtilPermissions.playerCanUseCommand(player,
-					"adminstuff.commands.admin.kit." + kitName))
-				PlayerUtils.sendInfo(player, "#" + count++ + " : " + kitName);
-		}
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /listkits <br>
+     * List all available kits (with permissions)
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        PlayerUtils.sendInfo(player, pluginName, "Kitliste:");
+        int count = 1;
+        Iterable<String> kitNames = kManager.getNames();
+        for (String kitName : kitNames) {
+            if (UtilPermissions.playerCanUseCommand(player, "adminstuff.commands.admin.kit." + kitName))
+                PlayerUtils.sendInfo(player, "#" + count++ + " : " + kitName);
+        }
+    }
 }

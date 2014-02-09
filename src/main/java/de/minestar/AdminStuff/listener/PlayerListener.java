@@ -58,154 +58,145 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class PlayerListener implements Listener {
 
-	private static final DateFormat DATE_TIME_FORMAT = DateFormat
-			.getDateTimeInstance();
+    private static final DateFormat DATE_TIME_FORMAT = DateFormat.getDateTimeInstance();
 
-	public static Map<String, ItemStack> queuedFillChest = new TreeMap<String, ItemStack>();
+    public static Map<String, ItemStack> queuedFillChest = new TreeMap<String, ItemStack>();
 
-	private final PlayerManager pManager;
+    private final PlayerManager pManager;
 
-	public PlayerListener(PlayerManager pManager) {
-		this.pManager = pManager;
-	}
+    public PlayerListener(PlayerManager pManager) {
+        this.pManager = pManager;
+    }
 
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event) {
-		if (BlockUtils.LocationEquals(event.getTo(), event.getFrom()))
-			return;
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        if (BlockUtils.LocationEquals(event.getTo(), event.getFrom()))
+            return;
 
-		// check glue position
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
-		Location gluePosition = mPlayer.getLocation("adminstuff.glue");
-		if (gluePosition != null)
-			event.setTo(gluePosition);
-	}
+        // check glue position
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        Location gluePosition = mPlayer.getLocation("adminstuff.glue");
+        if (gluePosition != null)
+            event.setTo(gluePosition);
+    }
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerDeath(PlayerDeathEvent event) {
-		// no itemdrops in classicmode
-		if (event.getEntity().getGameMode().equals(GameMode.CREATIVE)) {
-			event.getDrops().clear();
-		}
-	}
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        // no itemdrops in classicmode
+        if (event.getEntity().getGameMode().equals(GameMode.CREATIVE)) {
+            event.getDrops().clear();
+        }
+    }
 
-	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
-		mPlayer.setString("adminstuff.lastseen",
-				DATE_TIME_FORMAT.format(new Date()));
-		// remove temporary values
-		mPlayer.removeValue("adminstuff.slapped", Boolean.class);
-		mPlayer.removeValue("adminstuff.afk", Boolean.class);
-		pManager.updatePrefix(mPlayer);
-	}
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        mPlayer.setString("adminstuff.lastseen", DATE_TIME_FORMAT.format(new Date()));
+        // remove temporary values
+        mPlayer.removeValue("adminstuff.slapped", Boolean.class);
+        mPlayer.removeValue("adminstuff.afk", Boolean.class);
+        pManager.updatePrefix(mPlayer);
+    }
 
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
-		pManager.updatePrefix(mPlayer);
-	}
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        pManager.updatePrefix(mPlayer);
+    }
 
-	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event) {
-		// ONLY CLICKS ON A BLOCK
-		if (!event.hasBlock())
-			return;
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        // ONLY CLICKS ON A BLOCK
+        if (!event.hasBlock())
+            return;
 
-		Player player = event.getPlayer();
+        Player player = event.getPlayer();
 
-		// FILL CHEST
-		if (queuedFillChest.containsKey(player.getName())) {
+        // FILL CHEST
+        if (queuedFillChest.containsKey(player.getName())) {
 
-			// CLICKED ON A CHEST?
-			if (!event.getClickedBlock().getType().equals(Material.CHEST)) {
-				queuedFillChest.remove(player.getName());
-				PlayerUtils.sendError(player, Core.NAME,
-						"Chestfill abgebrochen!");
-				return;
-			} else {
-				event.setUseInteractedBlock(Event.Result.DENY);
-				event.setUseItemInHand(Event.Result.DENY);
-				event.setCancelled(true);
+            // CLICKED ON A CHEST?
+            if (!event.getClickedBlock().getType().equals(Material.CHEST)) {
+                queuedFillChest.remove(player.getName());
+                PlayerUtils.sendError(player, Core.NAME, "Chestfill abgebrochen!");
+                return;
+            } else {
+                event.setUseInteractedBlock(Event.Result.DENY);
+                event.setUseItemInHand(Event.Result.DENY);
+                event.setCancelled(true);
 
-				// FILL CHEST / DOUBLECHEST
-				ItemStack item = queuedFillChest.get(
-						event.getPlayer().getName()).clone();
-				Chest chest = (Chest) event.getClickedBlock().getState();
-				fillChest(chest, item);
+                // FILL CHEST / DOUBLECHEST
+                ItemStack item = queuedFillChest.get(event.getPlayer().getName()).clone();
+                Chest chest = (Chest) event.getClickedBlock().getState();
+                fillChest(chest, item);
 
-				Chest dChest = BlockUtils.isDoubleChest(chest.getBlock());
-				if (dChest != null)
-					fillChest(dChest, item);
+                Chest dChest = BlockUtils.isDoubleChest(chest.getBlock());
+                if (dChest != null)
+                    fillChest(dChest, item);
 
-				// SEND MESSAGE
-				PlayerUtils.sendSuccess(player, Core.NAME, "Kiste wurde mit '"
-						+ item.getType().name() + "' gefuellt!");
-				queuedFillChest.remove(event.getPlayer().getName());
-			}
-			return;
-		}
+                // SEND MESSAGE
+                PlayerUtils.sendSuccess(player, Core.NAME, "Kiste wurde mit '" + item.getType().name() + "' gefuellt!");
+                queuedFillChest.remove(event.getPlayer().getName());
+            }
+            return;
+        }
 
-		// Block counting
-		if (pManager.isInSelectionMode(player)) {
-			pManager.setSelectedBlock(player, event.getClickedBlock(), event
-					.getAction().equals(Action.LEFT_CLICK_BLOCK));
-			event.setCancelled(true);
-		}
-	}
+        // Block counting
+        if (pManager.isInSelectionMode(player)) {
+            pManager.setSelectedBlock(player, event.getClickedBlock(), event.getAction().equals(Action.LEFT_CLICK_BLOCK));
+            event.setCancelled(true);
+        }
+    }
 
-	private void fillChest(Chest chest, ItemStack item) {
-		if (item.getType().equals(Material.AIR)) {
-			chest.getInventory().clear();
-			return;
-		}
-		for (int i = 0; i < chest.getInventory().getSize(); i++)
-			chest.getInventory().addItem(item);
-	}
+    private void fillChest(Chest chest, ItemStack item) {
+        if (item.getType().equals(Material.AIR)) {
+            chest.getInventory().clear();
+            return;
+        }
+        for (int i = 0; i < chest.getInventory().getSize(); i++)
+            chest.getInventory().addItem(item);
+    }
 
-	@EventHandler
-	public void onPlayerChat(AsyncPlayerChatEvent event) {
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
 
-		// Mute Handeling
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
-		Boolean muted = mPlayer.getBoolean("adminstuff.muted");
+        // Mute Handeling
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(event.getPlayer());
+        Boolean muted = mPlayer.getBoolean("adminstuff.muted");
 
-		// Player is muted -> only ops and player with right permission can read
-		if (muted != null && muted) {
-			event.setCancelled(true);
+        // Player is muted -> only ops and player with right permission can read
+        if (muted != null && muted) {
+            event.setCancelled(true);
 
-			String message = ChatColor.RED + "[STUMM] " + mPlayer.getNickName()
-					+ ChatColor.WHITE + ": " + event.getMessage();
-			Player current = null;
+            String message = ChatColor.RED + "[STUMM] " + mPlayer.getNickName() + ChatColor.WHITE + ": " + event.getMessage();
+            Player current = null;
 
-			Iterator<Player> i = event.getRecipients().iterator();
-			while (i.hasNext()) {
-				current = i.next();
-				if (UtilPermissions.playerCanUseCommand(current,
-						"adminstuff.chat.read.muted"))
-					PlayerUtils.sendBlankMessage(current, message);
-			}
-		}
+            Iterator<Player> i = event.getRecipients().iterator();
+            while (i.hasNext()) {
+                current = i.next();
+                if (UtilPermissions.playerCanUseCommand(current, "adminstuff.chat.read.muted"))
+                    PlayerUtils.sendBlankMessage(current, message);
+            }
+        }
 
-		// want to chat to a few people
-		Set<String> recs = pManager.getRecipients(event.getPlayer().getName());
-		// player has used "chat" command
-		if (recs != null) {
-			Iterator<Player> i = event.getRecipients().iterator();
-			Player current = null;
-			while (i.hasNext()) {
-				current = i.next();
-				if (!current.equals(event.getPlayer())
-						&& !recs.contains(current.getName().toLowerCase()))
-					i.remove();
-			}
-		}
+        // want to chat to a few people
+        Set<String> recs = pManager.getRecipients(event.getPlayer().getName());
+        // player has used "chat" command
+        if (recs != null) {
+            Iterator<Player> i = event.getRecipients().iterator();
+            Player current = null;
+            while (i.hasNext()) {
+                current = i.next();
+                if (!current.equals(event.getPlayer()) && !recs.contains(current.getName().toLowerCase()))
+                    i.remove();
+            }
+        }
 
-		// reset afk
-		Boolean afk = mPlayer.getBoolean("adminstuff.afk");
-		if (afk != null && afk) {
-			mPlayer.removeValue("adminstuff.afk", Boolean.class);
-			pManager.updatePrefix(mPlayer);
-		}
-	}
+        // reset afk
+        Boolean afk = mPlayer.getBoolean("adminstuff.afk");
+        if (afk != null && afk) {
+            mPlayer.removeValue("adminstuff.afk", Boolean.class);
+            pManager.updatePrefix(mPlayer);
+        }
+    }
 }

@@ -29,45 +29,41 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdBurn extends AbstractCommand {
 
-	public cmdBurn(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdBurn(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /burn <Player> <Time in seconds><br>
-	 * Burn a player for x seconds
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the targets name
-	 *            split[1] is the time in seconds           
-	 */
-	public void execute(String[] args, Player player) {
+    @Override
+    /**
+     * Representing the command <br>
+     * /burn <Player> <Time in seconds><br>
+     * Burn a player for x seconds
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     *            split[0] is the targets name
+     *            split[1] is the time in seconds           
+     */
+    public void execute(String[] args, Player player) {
 
-		String playerName = args[0];
-		Player target = PlayerUtils.getOnlinePlayer(playerName);
-		if (target == null)
-			PlayerUtils.sendError(player, pluginName, "Spieler '" + playerName
-					+ "' wurde nicht gefunden!");
-		else if (target.isDead() || !target.isOnline())
-			PlayerUtils.sendError(player, pluginName, "Spieler '" + playerName
-					+ "' ist tot oder nicht online!");
-		else {
-			int ticks = 0;
-			try {
-				ticks = Integer.parseInt(args[1]) * 20;
-			} catch (Exception e) {
-				PlayerUtils.sendError(player, pluginName, args[1]
-						+ " ist keine Zahl!");
-				PlayerUtils.sendInfo(player, getHelpMessage());
-				return;
-			}
-			target.setFireTicks(ticks);
-			PlayerUtils.sendSuccess(target, pluginName, "Spieler '"
-					+ playerName + "' brennt nun. Zufrieden?");
-		}
-	}
+        String playerName = args[0];
+        Player target = PlayerUtils.getOnlinePlayer(playerName);
+        if (target == null)
+            PlayerUtils.sendError(player, pluginName, "Spieler '" + playerName + "' wurde nicht gefunden!");
+        else if (target.isDead() || !target.isOnline())
+            PlayerUtils.sendError(player, pluginName, "Spieler '" + playerName + "' ist tot oder nicht online!");
+        else {
+            int ticks = 0;
+            try {
+                ticks = Integer.parseInt(args[1]) * 20;
+            } catch (Exception e) {
+                PlayerUtils.sendError(player, pluginName, args[1] + " ist keine Zahl!");
+                PlayerUtils.sendInfo(player, getHelpMessage());
+                return;
+            }
+            target.setFireTicks(ticks);
+            PlayerUtils.sendSuccess(target, pluginName, "Spieler '" + playerName + "' brennt nun. Zufrieden?");
+        }
+    }
 }

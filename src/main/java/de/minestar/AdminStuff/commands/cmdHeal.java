@@ -34,48 +34,44 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdHeal extends AbstractExtendedCommand {
 
-	public cmdHeal(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdHeal(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	public void execute(String[] args, Player player) {
-		// heal yourself
-		if (args.length == 0)
-			healPlayer(player, player);
-		else
-			healPlayers(player, args);
-	}
+    @Override
+    public void execute(String[] args, Player player) {
+        // heal yourself
+        if (args.length == 0)
+            healPlayer(player, player);
+        else
+            healPlayers(player, args);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		if (args.length == 0)
-			ConsoleUtils.printError(pluginName,
-					"You are God, why do you want to heal yourself?");
-		else
-			healPlayers(console, args);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        if (args.length == 0)
+            ConsoleUtils.printError(pluginName, "You are God, why do you want to heal yourself?");
+        else
+            healPlayers(console, args);
+    }
 
-	private void healPlayers(CommandSender sender, String... targetNames) {
-		Player target = null;
-		for (String targetName : targetNames) {
-			target = PlayerUtils.getOnlinePlayer(targetName);
-			if (target == null)
-				ChatUtils.writeError(sender, pluginName, "Spieler '"
-						+ targetName + "' wurde nicht gefunden!");
-			else if (target.isDead() || !target.isOnline())
-				ChatUtils.writeError(sender, pluginName, "Spieler '"
-						+ targetName + "' ist tot oder nicht online!");
-			else
-				healPlayer(sender, target);
-		}
-	}
+    private void healPlayers(CommandSender sender, String... targetNames) {
+        Player target = null;
+        for (String targetName : targetNames) {
+            target = PlayerUtils.getOnlinePlayer(targetName);
+            if (target == null)
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
+            else if (target.isDead() || !target.isOnline())
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' ist tot oder nicht online!");
+            else
+                healPlayer(sender, target);
+        }
+    }
 
-	private void healPlayer(CommandSender sender, Player target) {
-		double maxHealth = ((Damageable) target).getMaxHealth();
-		target.setHealth(maxHealth);
-		PlayerUtils.sendInfo(target, pluginName, "Du bist geheilt worden!");
-		ChatUtils.writeSuccess(sender, pluginName,
-				"Spieler '" + target.getName() + "' wurde geheilt!");
-	}
+    private void healPlayer(CommandSender sender, Player target) {
+        double maxHealth = ((Damageable) target).getMaxHealth();
+        target.setHealth(maxHealth);
+        PlayerUtils.sendInfo(target, pluginName, "Du bist geheilt worden!");
+        ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' wurde geheilt!");
+    }
 }

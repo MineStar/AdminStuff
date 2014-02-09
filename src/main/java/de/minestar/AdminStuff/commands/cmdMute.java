@@ -34,62 +34,56 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdMute extends AbstractExtendedCommand {
 
-	public cmdMute(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdMute(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /mute <Player><br>
-	 * Flashes a player and kills him
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the targets name
-	 */
-	public void execute(String[] args, Player player) {
-		mutePlayers(args, player);
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /mute <Player><br>
+     * Flashes a player and kills him
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     *            split[0] is the targets name
+     */
+    public void execute(String[] args, Player player) {
+        mutePlayers(args, player);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		mutePlayers(args, console);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        mutePlayers(args, console);
+    }
 
-	private void mutePlayers(String[] targetNames, CommandSender sender) {
-		Player target = null;
-		for (String targetName : targetNames) {
-			target = PlayerUtils.getOnlinePlayer(targetName);
-			if (target == null)
-				ChatUtils.writeError(sender, pluginName, "Spieler '"
-						+ targetName + "' wurde nicht gefunden!");
-			else if (!target.isOnline())
-				ChatUtils.writeError(sender, pluginName,
-						"Spieler '" + target.getName()
-								+ "' ist tot oder nicht online!");
-			else
-				mutePlayer(target, sender);
-		}
-	}
+    private void mutePlayers(String[] targetNames, CommandSender sender) {
+        Player target = null;
+        for (String targetName : targetNames) {
+            target = PlayerUtils.getOnlinePlayer(targetName);
+            if (target == null)
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
+            else if (!target.isOnline())
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + target.getName() + "' ist tot oder nicht online!");
+            else
+                mutePlayer(target, sender);
+        }
+    }
 
-	private void mutePlayer(Player target, CommandSender sender) {
+    private void mutePlayer(Player target, CommandSender sender) {
 
-		MinestarPlayer mPlayer = MinestarCore.getPlayer(target);
-		Boolean muted = mPlayer.getBoolean("adminstuff.muted");
-		if (muted == null || !muted)
-			muted = true;
-		else
-			muted = false;
-		mPlayer.setBoolean("adminstuff.muted", muted);
-		if (muted)
-			ChatUtils.writeSuccess(sender, pluginName,
-					"Spieler '" + target.getName() + "' ist jetzt gemuted!");
-		else
-			ChatUtils.writeSuccess(sender, pluginName,
-					"Spieler '" + target.getName()
-							+ "' ist nicht länger gemuted!");
+        MinestarPlayer mPlayer = MinestarCore.getPlayer(target);
+        Boolean muted = mPlayer.getBoolean("adminstuff.muted");
+        if (muted == null || !muted)
+            muted = true;
+        else
+            muted = false;
+        mPlayer.setBoolean("adminstuff.muted", muted);
+        if (muted)
+            ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist jetzt gemuted!");
+        else
+            ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' ist nicht länger gemuted!");
 
-	}
+    }
 }

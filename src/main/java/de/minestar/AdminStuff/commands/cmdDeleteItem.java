@@ -37,117 +37,109 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdDeleteItem extends AbstractExtendedCommand {
 
-	public cmdDeleteItem(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-		this.description = "Loescht Items vom Boden";
-	}
+    public cmdDeleteItem(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+        this.description = "Loescht Items vom Boden";
+    }
 
-	@Override
-	public void execute(String[] args, Player player) {
-		// more parameter then used
-		if (args.length > 2)
-			PlayerUtils.sendError(player, pluginName, getHelpMessage());
-		else {
-			int radius = getRadius(args);
-			int itemId = getItemId(args);
-			if (itemId != -1
-					&& Material.matchMaterial(String.valueOf(itemId)) == null) {
-				PlayerUtils.sendError(player, pluginName, "The item id "
-						+ itemId + " is not a valid id!");
-				return;
-			}
-			deleteItems(radius, itemId, player.getLocation(), player,
-					player.getWorld());
-		}
-	}
+    @Override
+    public void execute(String[] args, Player player) {
+        // more parameter then used
+        if (args.length > 2)
+            PlayerUtils.sendError(player, pluginName, getHelpMessage());
+        else {
+            int radius = getRadius(args);
+            int itemId = getItemId(args);
+            if (itemId != -1 && Material.matchMaterial(String.valueOf(itemId)) == null) {
+                PlayerUtils.sendError(player, pluginName, "The item id " + itemId + " is not a valid id!");
+                return;
+            }
+            deleteItems(radius, itemId, player.getLocation(), player, player.getWorld());
+        }
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		// more parameter then used
-		if (args.length > 2)
-			ConsoleUtils.printError(pluginName, getHelpMessage());
-		else {
-			World world = Bukkit.getWorld(args[0]);
-			if (world != null) {
-				ConsoleUtils.printError(pluginName, "World '" + args[0]
-						+ "' does not exist!");
-				ConsoleUtils.printError(pluginName, getHelpMessage());
-			} else {
-				int itemId = getItemId(args);
-				if (Material.matchMaterial(String.valueOf(itemId)) == null) {
-					ConsoleUtils.printError(pluginName, "The item id " + itemId
-							+ " is not a valid id!");
-					return;
-				}
-				deleteItems(-1, itemId, null, console, world);
-			}
-		}
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        // more parameter then used
+        if (args.length > 2)
+            ConsoleUtils.printError(pluginName, getHelpMessage());
+        else {
+            World world = Bukkit.getWorld(args[0]);
+            if (world != null) {
+                ConsoleUtils.printError(pluginName, "World '" + args[0] + "' does not exist!");
+                ConsoleUtils.printError(pluginName, getHelpMessage());
+            } else {
+                int itemId = getItemId(args);
+                if (Material.matchMaterial(String.valueOf(itemId)) == null) {
+                    ConsoleUtils.printError(pluginName, "The item id " + itemId + " is not a valid id!");
+                    return;
+                }
+                deleteItems(-1, itemId, null, console, world);
+            }
+        }
+    }
 
-	private int getRadius(String[] args) {
-		int radius = -1;
-		for (String arg : args) {
-			if (arg.startsWith("r")) {
-				radius = Integer.parseInt(arg.substring(1));
-			}
-		}
+    private int getRadius(String[] args) {
+        int radius = -1;
+        for (String arg : args) {
+            if (arg.startsWith("r")) {
+                radius = Integer.parseInt(arg.substring(1));
+            }
+        }
 
-		return radius;
-	}
+        return radius;
+    }
 
-	private int getItemId(String[] args) {
-		int itemId = -1;
-		for (String arg : args) {
-			if (arg.startsWith("i")) {
-				itemId = Integer.parseInt(arg.substring(1));
-			}
-		}
+    private int getItemId(String[] args) {
+        int itemId = -1;
+        for (String arg : args) {
+            if (arg.startsWith("i")) {
+                itemId = Integer.parseInt(arg.substring(1));
+            }
+        }
 
-		return itemId;
-	}
+        return itemId;
+    }
 
-	private void deleteItems(int radius, int itemId, Location position,
-			CommandSender sender, World world) {
+    private void deleteItems(int radius, int itemId, Location position, CommandSender sender, World world) {
 
-		Collection<Item> items = world.getEntitiesByClass(Item.class);
-		long counter = 0L;
-		// delete all
-		if (radius == -1 && itemId == -1) {
-			for (Item item : items) {
-				item.remove();
-				++counter;
-			}
-		} else if (radius == -1 && itemId != -1) {
-			for (Item item : items) {
-				if (item.getItemStack().getTypeId() == itemId) {
-					item.remove();
-					++counter;
-				}
-			}
-		} else if (radius != -1 && itemId == -1) {
-			// square faster than square root
-			radius *= radius;
-			for (Item item : items) {
-				if (isIn(item.getLocation(), position, radius)) {
-					item.remove();
-					++counter;
-				}
-			}
-		} else {
-			radius *= radius;
-			for (Item item : items) {
-				if (item.getItemStack().getTypeId() == itemId
-						&& isIn(item.getLocation(), position, radius)) {
-					item.remove();
-					++counter;
-				}
-			}
-		}
-		ChatUtils.writeSuccess(sender, pluginName, counter
-				+ " items wurden entfernt!");
-	}
+        Collection<Item> items = world.getEntitiesByClass(Item.class);
+        long counter = 0L;
+        // delete all
+        if (radius == -1 && itemId == -1) {
+            for (Item item : items) {
+                item.remove();
+                ++counter;
+            }
+        } else if (radius == -1 && itemId != -1) {
+            for (Item item : items) {
+                if (item.getItemStack().getTypeId() == itemId) {
+                    item.remove();
+                    ++counter;
+                }
+            }
+        } else if (radius != -1 && itemId == -1) {
+            // square faster than square root
+            radius *= radius;
+            for (Item item : items) {
+                if (isIn(item.getLocation(), position, radius)) {
+                    item.remove();
+                    ++counter;
+                }
+            }
+        } else {
+            radius *= radius;
+            for (Item item : items) {
+                if (item.getItemStack().getTypeId() == itemId && isIn(item.getLocation(), position, radius)) {
+                    item.remove();
+                    ++counter;
+                }
+            }
+        }
+        ChatUtils.writeSuccess(sender, pluginName, counter + " items wurden entfernt!");
+    }
 
-	private boolean isIn(Location itemP, Location playerP, int radius) {
-		return radius >= itemP.distanceSquared(playerP);
-	}
+    private boolean isIn(Location itemP, Location playerP, int radius) {
+        return radius >= itemP.distanceSquared(playerP);
+    }
 }

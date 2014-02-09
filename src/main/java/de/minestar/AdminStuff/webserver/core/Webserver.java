@@ -25,80 +25,91 @@ import com.sun.net.httpserver.HttpServer;
 
 import de.minestar.AdminStuff.webserver.pagehandler.AbstractHTMLHandler;
 import de.minestar.AdminStuff.webserver.pagehandler.DoLoginPageHandler;
+import de.minestar.AdminStuff.webserver.pagehandler.ErrorPageHandler;
 import de.minestar.AdminStuff.webserver.pagehandler.InvalidLoginPageHandler;
 import de.minestar.AdminStuff.webserver.pagehandler.LoginPageHandler;
 import de.minestar.AdminStuff.webserver.pagehandler.PageHandler;
-import de.minestar.AdminStuff.webserver.pagehandler.SecurePageHandler;
+import de.minestar.AdminStuff.webserver.pagehandler.ChatPageHandler;
+import de.minestar.AdminStuff.webserver.template.Template;
+import de.minestar.AdminStuff.webserver.template.TemplateHandler;
 import de.minestar.AdminStuff.webserver.units.AuthHandler;
 import de.minestar.AdminStuff.webserver.units.HandlerList;
 import de.minestar.AdminStuff.webserver.utils.ParameterFilter;
 
 public class Webserver {
 
-	private HttpServer server;
+    private HttpServer server;
 
-	public Webserver(int port) throws IOException {
-		try {
-			System.out.println("Starting webserver @ port: " + port);
+    public Webserver(int port) throws IOException {
+        try {
+            System.out.println("Starting webserver @ port: " + port);
 
-			this.server = HttpServer.create(new InetSocketAddress(port), 0);
+            this.server = HttpServer.create(new InetSocketAddress(port), 0);
 
-			// create mainHandler
-			PageHandler pageHandler = new PageHandler();
-			pageHandler.setDefaultPage("/login.html");
-			server.createContext("/", pageHandler).getFilters()
-					.add(new ParameterFilter());
+            // create mainHandler
+            PageHandler pageHandler = new PageHandler();
+            server.createContext("/", pageHandler).getFilters().add(new ParameterFilter());
 
-			// create subHandler
-			if (!AuthHandler.init()) {
-				throw new Exception("AuthHandler not initialized!");
-			}
-			this.startUp();
+            // create subHandler
+            if (!AuthHandler.init()) {
+                throw new Exception("AuthHandler not initialized!");
+            }
+            this.startUp();
 
-			// createContext
-			server.setExecutor(null);
-			server.start();
-			System.out.println("Webserver started @ port: " + port);
-		} catch (Exception e) {
-			System.out.println("ERROR: could not start server @ port: " + port);
-			e.printStackTrace();
-			this.server = null;
-		}
-	}
+            // createContext
+            server.setExecutor(null);
+            server.start();
+            System.out.println("Webserver started @ port: " + port);
+        } catch (Exception e) {
+            System.out.println("ERROR: could not start server @ port: " + port);
+            e.printStackTrace();
+            this.server = null;
+        }
+    }
 
-	private void startUp() {
-		this.registerPage(new InvalidLoginPageHandler("/invalidLogin.html"),
-				"/invalidLogin.html");
-		this.registerPage(new LoginPageHandler("/login.html"), "/login.html");
-		this.registerPage(new DoLoginPageHandler("/doLogin.html"),
-				"/doLogin.html");
-		this.registerPage(new SecurePageHandler("/securePage.html"),
-				"/securePage.html");
-	}
+    private void startUp() {
+        this.registerTemplate("error404", "/error404.html");
+        this.registerTemplate("login", "/login.html");
+        this.registerTemplate("doLogin", "/doLogin.html");
+        this.registerTemplate("tpl_navi_on", "/tpl_navi_on.html");
+        this.registerTemplate("tpl_navi_off", "/tpl_navi_off.html");
+        this.registerTemplate("invalidLogin", "/invalidLogin.html");
+        this.registerTemplate("chat", "/chat.html");
 
-	public void registerPage(AbstractHTMLHandler handler, String path) {
-		HandlerList.registerHandler(path, handler);
-	}
+        this.registerPage(new ErrorPageHandler(), "/error404.html");
+        this.registerPage(new InvalidLoginPageHandler(), "/invalidLogin.html");
+        this.registerPage(new LoginPageHandler(), "/login.html");
+        this.registerPage(new DoLoginPageHandler(), "/doLogin.html");
+        this.registerPage(new ChatPageHandler(), "/chat.html");
+    }
 
-	public HttpServer getServer() {
-		return server;
-	}
+    private void registerTemplate(String name, String path) {
+        TemplateHandler.addTemplate(new Template(name, path));
+    }
 
-	public boolean isRunning() {
-		return this.server != null;
-	}
+    public void registerPage(AbstractHTMLHandler handler, String path) {
+        HandlerList.registerHandler(path, handler);
+    }
 
-	public void close() {
-		if (this.server != null) {
-			this.server.stop(0);
-		}
-	}
+    public HttpServer getServer() {
+        return server;
+    }
 
-	public static void main(String[] args) {
-		try {
-			new Webserver(8000);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public boolean isRunning() {
+        return this.server != null;
+    }
+
+    public void close() {
+        if (this.server != null) {
+            this.server.stop(0);
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            new Webserver(8000);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

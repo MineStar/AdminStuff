@@ -31,33 +31,31 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdWeather extends AbstractCommand {
 
-	public cmdWeather(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdWeather(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	/**
-	 * Representing the command <br>
-	 * /weather <Weather> <br>
-	 * This changes the worldweather
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 *            split[0] is the weather
-	 */
-	@Override
-	public void execute(String[] args, Player player) {
-		Weather weather = Weather.getWeather(args[0]);
-		if (weather == null) {
-			PlayerUtils.sendError(player, pluginName,
-					"Falscher Paramater! Benutze einen der folgenden:");
-			PlayerUtils.sendInfo(player, Weather.possibleNames());
-		} else {
-			World world = player.getWorld();
-			world.setStorm(weather.isStorming());
-			world.setThundering(weather.isThundering());
-			PlayerUtils.sendSuccess(player, pluginName,
-					"Wetter in deiner Welt gesetzt auf: '" + weather + "'");
-		}
-	}
+    /**
+     * Representing the command <br>
+     * /weather <Weather> <br>
+     * This changes the worldweather
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     *            split[0] is the weather
+     */
+    @Override
+    public void execute(String[] args, Player player) {
+        Weather weather = Weather.getWeather(args[0]);
+        if (weather == null) {
+            PlayerUtils.sendError(player, pluginName, "Falscher Paramater! Benutze einen der folgenden:");
+            PlayerUtils.sendInfo(player, Weather.possibleNames());
+        } else {
+            World world = player.getWorld();
+            world.setStorm(weather.isStorming());
+            world.setThundering(weather.isThundering());
+            PlayerUtils.sendSuccess(player, pluginName, "Wetter in deiner Welt gesetzt auf: '" + weather + "'");
+        }
+    }
 }

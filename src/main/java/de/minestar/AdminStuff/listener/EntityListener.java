@@ -32,24 +32,23 @@ import de.minestar.core.units.MinestarPlayer;
 
 public class EntityListener implements Listener {
 
-	public EntityListener() {
-	}
+    public EntityListener() {
+    }
 
-	@EventHandler
-	public void onEntityDamage(EntityDamageEvent event) {
-		if (event.isCancelled() || !(event.getEntity() instanceof Player))
-			return;
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.isCancelled() || !(event.getEntity() instanceof Player))
+            return;
 
-		// Cancel damange when player is in god mode
-		MinestarPlayer mPlayer = MinestarCore.getPlayer((Player) event
-				.getEntity());
-		Boolean godMode = mPlayer.getBoolean("adminstuff.god");
-		if (godMode != null && godMode == true) {
-			if (((Player) event.getEntity()).getGameMode() != GameMode.ADVENTURE) {
-				event.setDamage(0.0);
-				event.setCancelled(true);
-				return;
-			}
-		}
-	}
+        // Cancel damange when player is in god mode
+        MinestarPlayer mPlayer = MinestarCore.getPlayer((Player) event.getEntity());
+        Boolean godMode = mPlayer.getBoolean("adminstuff.god");
+        if (godMode != null && godMode == true) {
+            if (((Player) event.getEntity()).getGameMode() != GameMode.ADVENTURE) {
+                event.setDamage(0.0);
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
 }

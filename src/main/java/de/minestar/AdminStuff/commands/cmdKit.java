@@ -40,93 +40,79 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdKit extends AbstractCommand {
 
-	private KitManager kManager;
+    private KitManager kManager;
 
-	public cmdKit(String syntax, String arguments, String node,
-			KitManager kManager) {
-		super(Core.NAME, syntax, arguments, node);
-		this.kManager = kManager;
-	}
+    public cmdKit(String syntax, String arguments, String node, KitManager kManager) {
+        super(Core.NAME, syntax, arguments, node);
+        this.kManager = kManager;
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /kit <Name> <br>
-	 * Give yourself a kit
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
-		if (args.length == 1) {
-			List<ItemStack> kit = kManager.getKit(args[0]);
-			if (kit == null)
-				PlayerUtils.sendError(player, pluginName, "Das Kit '" + args[0]
-						+ "' wurde nicht gefunden!");
-			else
-				giveKit(player, kit, args[0]);
-		} else
-			giveKits(args, player);
-	}
+    @Override
+    /**
+     * Representing the command <br>
+     * /kit <Name> <br>
+     * Give yourself a kit
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
+        if (args.length == 1) {
+            List<ItemStack> kit = kManager.getKit(args[0]);
+            if (kit == null)
+                PlayerUtils.sendError(player, pluginName, "Das Kit '" + args[0] + "' wurde nicht gefunden!");
+            else
+                giveKit(player, kit, args[0]);
+        } else
+            giveKits(args, player);
+    }
 
-	@Override
-	public void execute(String[] args, ConsoleCommandSender console) {
-		if (args.length == 1)
-			ConsoleUtils
-					.printError(pluginName,
-							"You cannot give you any items, you have already every item!");
-		else
-			giveKits(args, console);
-	}
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        if (args.length == 1)
+            ConsoleUtils.printError(pluginName, "You cannot give you any items, you have already every item!");
+        else
+            giveKits(args, console);
+    }
 
-	private boolean canUseKit(String kitName, CommandSender sender) {
-		return (sender instanceof ConsoleCommandSender)
-				|| UtilPermissions.playerCanUseCommand((Player) sender,
-						"adminstuff.commands.admin.kit." + kitName);
-	}
+    private boolean canUseKit(String kitName, CommandSender sender) {
+        return (sender instanceof ConsoleCommandSender) || UtilPermissions.playerCanUseCommand((Player) sender, "adminstuff.commands.admin.kit." + kitName);
+    }
 
-	private void giveKits(String[] args, CommandSender sender) {
-		String kitName = args[0];
-		List<ItemStack> kit = kManager.getKit(kitName);
-		if (kit == null) {
-			ChatUtils.writeError(sender, pluginName, "Das Kit '" + kitName
-					+ "' wurde nicht gefunden!");
-			return;
-		}
-		if (!canUseKit(kitName, sender)) {
-			ChatUtils.writeError(sender, pluginName, "Du kannst das Kit '"
-					+ kitName + "' nicht benutzen!");
-			return;
-		}
-		Player target = null;
-		for (int i = 1; i < args.length; ++i) {
-			target = PlayerUtils.getOnlinePlayer(args[i]);
-			if (target == null)
-				ChatUtils.writeError(sender, pluginName, "Spieler '" + args[i]
-						+ "' wurde nicht gefunden!");
-			else if (target.isDead() || !target.isOnline())
-				ChatUtils.writeError(sender, pluginName,
-						"Spieler '" + target.getName()
-								+ "' ist tot oder nicht online!");
-			else {
-				giveKit(target, kit, kitName);
-				ChatUtils.writeSuccess(sender, pluginName,
-						"Spieler '" + target.getName() + "' hat das Kit '"
-								+ kitName + "' erhalten");
-			}
-		}
-	}
+    private void giveKits(String[] args, CommandSender sender) {
+        String kitName = args[0];
+        List<ItemStack> kit = kManager.getKit(kitName);
+        if (kit == null) {
+            ChatUtils.writeError(sender, pluginName, "Das Kit '" + kitName + "' wurde nicht gefunden!");
+            return;
+        }
+        if (!canUseKit(kitName, sender)) {
+            ChatUtils.writeError(sender, pluginName, "Du kannst das Kit '" + kitName + "' nicht benutzen!");
+            return;
+        }
+        Player target = null;
+        for (int i = 1; i < args.length; ++i) {
+            target = PlayerUtils.getOnlinePlayer(args[i]);
+            if (target == null)
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + args[i] + "' wurde nicht gefunden!");
+            else if (target.isDead() || !target.isOnline())
+                ChatUtils.writeError(sender, pluginName, "Spieler '" + target.getName() + "' ist tot oder nicht online!");
+            else {
+                giveKit(target, kit, kitName);
+                ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + target.getName() + "' hat das Kit '" + kitName + "' erhalten");
+            }
+        }
+    }
 
-	@SuppressWarnings("deprecation")
-	private void giveKit(Player target, List<ItemStack> kit, String kitName) {
-		Inventory inv = target.getInventory();
-		for (ItemStack item : kit)
-			inv.addItem(item);
+    @SuppressWarnings("deprecation")
+    private void giveKit(Player target, List<ItemStack> kit, String kitName) {
+        Inventory inv = target.getInventory();
+        for (ItemStack item : kit)
+            inv.addItem(item);
 
-		target.updateInventory();
+        target.updateInventory();
 
-		PlayerUtils.sendInfo(target, pluginName, "Du hast Kit '" + kitName
-				+ "' erhalten!");
-	}
+        PlayerUtils.sendInfo(target, pluginName, "Du hast Kit '" + kitName + "' erhalten!");
+    }
 }

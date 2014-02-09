@@ -31,32 +31,32 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdCompass extends AbstractCommand {
 
-	public cmdCompass(String syntax, String arguments, String node) {
-		super(Core.NAME, syntax, arguments, node);
-	}
+    public cmdCompass(String syntax, String arguments, String node) {
+        super(Core.NAME, syntax, arguments, node);
+    }
 
-	@Override
-	/**
-	 * Representing the command <br>
-	 * /compass <br>
-	 * Show the compassdir
-	 * 
-	 * @param player
-	 *            Called the command
-	 * @param split
-	 */
-	public void execute(String[] args, Player player) {
+    @Override
+    /**
+     * Representing the command <br>
+     * /compass <br>
+     * Show the compassdir
+     * 
+     * @param player
+     *            Called the command
+     * @param split
+     */
+    public void execute(String[] args, Player player) {
 
-		int r = (int) getCorrectedYaw(player.getLocation());
-		Direction dir = Direction.getDirection(r);
-		PlayerUtils.sendInfo(player, pluginName, "Kompass: " + dir.name());
-	}
+        int r = (int) getCorrectedYaw(player.getLocation());
+        Direction dir = Direction.getDirection(r);
+        PlayerUtils.sendInfo(player, pluginName, "Kompass: " + dir.name());
+    }
 
-	private float getCorrectedYaw(Location location) {
-		float angle = (location.getYaw() - 90.0F) % 360.0F;
-		if (angle < 0.0F) {
-			angle += 360.0F;
-		}
-		return angle;
-	}
+    private float getCorrectedYaw(Location location) {
+        float angle = (location.getYaw() - 90.0F) % 360.0F;
+        if (angle < 0.0F) {
+            angle += 360.0F;
+        }
+        return angle;
+    }
 }
