@@ -16,51 +16,41 @@
  * along with AdminStuff.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.minestar.AdminStuff.webserver.pagehandler;
+package de.minestar.AdminStuff.webserver.pagehandler.main;
 
 import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import de.minestar.AdminStuff.webserver.exceptions.LoginInvalidException;
-import de.minestar.AdminStuff.webserver.template.Template;
 import de.minestar.AdminStuff.webserver.template.TemplateHandler;
-import de.minestar.AdminStuff.webserver.template.TemplateReplacement;
 import de.minestar.AdminStuff.webserver.units.AuthHandler;
 import de.minestar.AdminStuff.webserver.units.UserData;
 
-public class DoLoginPageHandler extends AbstractHTMLHandler {
+public class ErrorPageHandler extends CustomPageHandler {
 
-    private Template template;
-    private TemplateReplacement rpl_navigation, rpl_user, rpl_token;
-
-    public DoLoginPageHandler() {
-        super(false);
-        this.template = TemplateHandler.getTemplate("doLogin");
-        this.rpl_user = new TemplateReplacement("USERNAME");
-        this.rpl_token = new TemplateReplacement("TOKEN");
-        this.rpl_navigation = new TemplateReplacement("NAVIGATION", TemplateHandler.getTemplate("tpl_navi_on").getString());
+    public ErrorPageHandler() {
+        super(false, TemplateHandler.getTemplate("error404"));
     }
 
-    @Override
     @SuppressWarnings("unchecked")
-    public String handle(HttpExchange http) throws LoginInvalidException {
+    @Override
+    public String handle(HttpExchange http) {
         Map<String, String> params = (Map<String, String>) http.getAttribute("parameters");
-        String userName = params.get("txt_username");
-        String clearPassword = params.get("txt_password");
+        String userName = params.get("username");
+        String token = params.get("token");
 
-        if (userName != null && clearPassword != null && AuthHandler.doLogin(userName, clearPassword)) {
+        if (userName != null && token != null && AuthHandler.isUserLoginValid(userName, token)) {
             // get userdata
             UserData user = AuthHandler.getUser(userName);
 
             // update replacements...
             this.rpl_user.setValue(userName);
             this.rpl_token.setValue(user.getToken());
-
-            // autoreplace...
-            return this.template.autoReplace(this.rpl_navigation, this.rpl_user, this.rpl_token);
+            this.rpl_navigation.setValue(TemplateHandler.getTemplate("tpl_navi_on").getString());
         } else {
-            throw new LoginInvalidException();
+            this.rpl_navigation.setValue(TemplateHandler.getTemplate("tpl_navi_off").getString());
         }
+        return this.template.autoReplace(this.rpl_navigation, this.rpl_user, this.rpl_token);
+
     }
 }

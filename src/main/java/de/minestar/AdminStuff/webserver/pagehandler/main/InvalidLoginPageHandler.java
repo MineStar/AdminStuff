@@ -16,22 +16,23 @@
  * along with AdminStuff.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.minestar.AdminStuff.webserver.pagehandler;
+package de.minestar.AdminStuff.webserver.pagehandler.main;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import de.minestar.AdminStuff.webserver.pagehandler.AbstractHTMLHandler;
 import de.minestar.AdminStuff.webserver.template.Template;
 import de.minestar.AdminStuff.webserver.template.TemplateHandler;
 import de.minestar.AdminStuff.webserver.template.TemplateReplacement;
 
-public class LoginPageHandler extends AbstractHTMLHandler {
+public class InvalidLoginPageHandler extends AbstractHTMLHandler {
 
     private Template template;
     private TemplateReplacement rpl_navigation;
 
-    public LoginPageHandler() {
+    public InvalidLoginPageHandler() {
         super(false);
-        this.template = TemplateHandler.getTemplate("login");
+        this.template = TemplateHandler.getTemplate("invalidLogin");
         this.rpl_navigation = new TemplateReplacement("NAVIGATION", TemplateHandler.getTemplate("tpl_navi_off").getString());
     }
 
@@ -39,5 +40,4 @@ public class LoginPageHandler extends AbstractHTMLHandler {
     public String handle(HttpExchange http) {
         return this.template.autoReplace(this.rpl_navigation);
     }
-
 }

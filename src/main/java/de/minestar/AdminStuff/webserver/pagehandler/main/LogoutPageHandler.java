@@ -16,27 +16,25 @@
  * along with AdminStuff.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.minestar.AdminStuff.webserver.pagehandler;
+package de.minestar.AdminStuff.webserver.pagehandler.main;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import de.minestar.AdminStuff.webserver.template.Template;
+import de.minestar.AdminStuff.webserver.exceptions.LoginInvalidException;
 import de.minestar.AdminStuff.webserver.template.TemplateHandler;
 import de.minestar.AdminStuff.webserver.template.TemplateReplacement;
+import de.minestar.AdminStuff.webserver.units.AuthHandler;
 
-public class ErrorPageHandler extends AbstractHTMLHandler {
+public class LogoutPageHandler extends CustomPageHandler {
 
-    private Template template;
-    private TemplateReplacement rpl_navigation;
-
-    public ErrorPageHandler() {
-        super(false);
-        this.template = TemplateHandler.getTemplate("error404");
-        this.rpl_navigation = new TemplateReplacement("NAVIGATION", TemplateHandler.getTemplate("tpl_navi_off").getString());
+    public LogoutPageHandler() {
+        super(true, TemplateHandler.getTemplate("logout"));
     }
 
     @Override
-    public String handle(HttpExchange http) {
-        return this.template.autoReplace(this.rpl_navigation);
+    public String handle(HttpExchange http) throws LoginInvalidException {
+        super.updateReplacements(http);
+        AuthHandler.logoutUser(this.rpl_user.getValue());
+        return this.template.autoReplace(new TemplateReplacement("NAVIGATION", TemplateHandler.getTemplate("tpl_navi_off").getString()), this.rpl_user, this.rpl_token);
     }
 }

@@ -33,7 +33,8 @@ import de.minestar.AdminStuff.webserver.units.HandlerList;
 
 public class PageHandler implements HttpHandler {
 
-    private String defaultPage = "/error404.html";
+    private String defaultPage = "/login.html";
+    private String errorPage = "/error404.html";
     private String invalidLoginPage = "/invalidLogin.html";
 
     @SuppressWarnings("unchecked")
@@ -45,6 +46,10 @@ public class PageHandler implements HttpHandler {
         int index = pageName.indexOf('?');
         if (index != -1) {
             pageName = pageName.substring(0, index);
+        }
+
+        if (pageName.length() < 2) {
+            pageName = this.defaultPage;
         }
 
         try {
@@ -75,7 +80,11 @@ public class PageHandler implements HttpHandler {
                         response = HandlerList.getHandler(pageName).handle(http);
                     } catch (LoginInvalidException e) {
                         // this is needed only for the doLogin-page...
-                        response = HandlerList.getHandler(this.invalidLoginPage).handle(http);
+                        AbstractHTMLHandler invalidHandler = HandlerList.getHandler(this.invalidLoginPage);
+                        response = "ERROR - Login invalid!";
+                        if (invalidHandler != null) {
+                            response = invalidHandler.handle(http);
+                        }
                     }
                 }
 
@@ -105,9 +114,13 @@ public class PageHandler implements HttpHandler {
                         return;
                     }
                 }
+
                 // handle 404
-                System.out.println(defaultPage);
-                String response = HandlerList.getHandler(this.defaultPage).handle(http);
+                AbstractHTMLHandler errorHandler = HandlerList.getHandler(this.errorPage);
+                String response = "ERROR404 - Page not found!";
+                if (errorHandler != null) {
+                    response = errorHandler.handle(http);
+                }
                 http.sendResponseHeaders(200, response.length());
                 OutputStream os = http.getResponseBody();
                 os.write(response.getBytes());
@@ -128,8 +141,8 @@ public class PageHandler implements HttpHandler {
         this.invalidLoginPage = invalidLoginPage;
     }
 
-    public void setDefaultPage(String defaultPage) {
-        this.defaultPage = defaultPage;
+    public void setErrorPage(String errorPage) {
+        this.errorPage = errorPage;
     }
 
     private byte[] readFile(final File file) {

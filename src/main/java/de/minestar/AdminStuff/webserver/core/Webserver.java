@@ -24,12 +24,13 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 
 import de.minestar.AdminStuff.webserver.pagehandler.AbstractHTMLHandler;
-import de.minestar.AdminStuff.webserver.pagehandler.DoLoginPageHandler;
-import de.minestar.AdminStuff.webserver.pagehandler.ErrorPageHandler;
-import de.minestar.AdminStuff.webserver.pagehandler.InvalidLoginPageHandler;
-import de.minestar.AdminStuff.webserver.pagehandler.LoginPageHandler;
 import de.minestar.AdminStuff.webserver.pagehandler.PageHandler;
-import de.minestar.AdminStuff.webserver.pagehandler.ChatPageHandler;
+import de.minestar.AdminStuff.webserver.pagehandler.main.ChatPageHandler;
+import de.minestar.AdminStuff.webserver.pagehandler.main.DoLoginPageHandler;
+import de.minestar.AdminStuff.webserver.pagehandler.main.ErrorPageHandler;
+import de.minestar.AdminStuff.webserver.pagehandler.main.InvalidLoginPageHandler;
+import de.minestar.AdminStuff.webserver.pagehandler.main.LoginPageHandler;
+import de.minestar.AdminStuff.webserver.pagehandler.main.LogoutPageHandler;
 import de.minestar.AdminStuff.webserver.template.Template;
 import de.minestar.AdminStuff.webserver.template.TemplateHandler;
 import de.minestar.AdminStuff.webserver.units.AuthHandler;
@@ -68,17 +69,21 @@ public class Webserver {
     }
 
     private void startUp() {
-        this.registerTemplate("error404", "/error404.html");
-        this.registerTemplate("login", "/login.html");
-        this.registerTemplate("doLogin", "/doLogin.html");
+
         this.registerTemplate("tpl_navi_on", "/tpl_navi_on.html");
         this.registerTemplate("tpl_navi_off", "/tpl_navi_off.html");
+
+        this.registerTemplate("error404", "/error404.html");
+        this.registerTemplate("login", "/login.html");
+        this.registerTemplate("logout", "/logout.html");
+        this.registerTemplate("doLogin", "/doLogin.html");
         this.registerTemplate("invalidLogin", "/invalidLogin.html");
         this.registerTemplate("chat", "/chat.html");
 
         this.registerPage(new ErrorPageHandler(), "/error404.html");
         this.registerPage(new InvalidLoginPageHandler(), "/invalidLogin.html");
         this.registerPage(new LoginPageHandler(), "/login.html");
+        this.registerPage(new LogoutPageHandler(), "/logout.html");
         this.registerPage(new DoLoginPageHandler(), "/doLogin.html");
         this.registerPage(new ChatPageHandler(), "/chat.html");
     }
