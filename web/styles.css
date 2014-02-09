@@ -136,12 +136,43 @@ body, html {
 	text-align: left;
     clear: both;    
     margin: 4px auto;
-    width: 698px;
-    height: 200px;
+    width: 688px;
     font-weight: normal;
     background: #ffffff;
     border-style: solid;
     border-width: 1px;
     border-color: #000000;    
     color: #000000;
+    padding: 5px;
+}
+
+#form_left {
+	position: relative;
+	clear: both;
+	float: left;
+	left: 200px;
+	width: 200px;
+	height: 20px;
+	text-align: right; 
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000000;   
+}
+
+#form_right {
+	position: relative;
+	float: left;
+	width: 200px;
+	height: 20px;
+	text-align: left;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000000;   
+}
+
+#form_column {
+	float: right;
+	width: 400px;
+	height: 20px;
+	text-align: center;
 }
