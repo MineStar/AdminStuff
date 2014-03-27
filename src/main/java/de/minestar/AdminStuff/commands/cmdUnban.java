@@ -21,12 +21,12 @@
 
 package de.minestar.AdminStuff.commands;
 
-import net.minecraft.server.v1_7_R1.BanList;
+import net.minecraft.server.v1_7_R2.BanList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_7_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R2.CraftServer;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
