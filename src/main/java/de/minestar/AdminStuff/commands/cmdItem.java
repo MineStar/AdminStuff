@@ -21,8 +21,6 @@
 
 package de.minestar.AdminStuff.commands;
 
-import net.minecraft.server.v1_7_R2.Material;
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

@@ -21,6 +21,8 @@
 
 package de.minestar.AdminStuff.commands;
 
+import java.util.HashSet;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -61,7 +63,7 @@ public class cmdGlueHere extends AbstractExtendedCommand {
                 mPlayer = MinestarCore.getPlayer(target);
                 Location loc = mPlayer.getLocation("adminstuff.glue");
                 if (loc == null) {
-                    mPlayer.setLocation("adminstuff.glue", player.getLastTwoTargetBlocks(null, 50).get(0).getLocation());
+                    mPlayer.setLocation("adminstuff.glue", player.getLastTwoTargetBlocks((HashSet<Byte>) null, 50).get(0).getLocation());
                     PlayerUtils.sendSuccess(player, pluginName, "Spieler '" + target.getName() + "' ist festgeklebt!");
                     PlayerUtils.sendInfo(target, pluginName, "Du bist festgeklebt!");
                 } else {

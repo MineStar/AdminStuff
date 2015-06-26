@@ -26,13 +26,15 @@ import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.server.v1_7_R2.BanEntry;
+import net.minecraft.server.v1_8_R3.GameProfileBanEntry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_7_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.entity.Player;
+
+import com.mojang.authlib.GameProfile;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -92,25 +94,32 @@ public class cmdTempBan extends AbstractExtendedCommand {
         else
             reason = "Temporärer Bann";
 
-        ban(sender, playerName, time, reason);
+        if (target != null) {
+            CraftServer cServer = (CraftServer) Bukkit.getServer();
+            GameProfile[] profileList = cServer.getHandle().g();
+            for (GameProfile profile : profileList) {
+                if (profile.getName().equalsIgnoreCase(playerName)) {
+                    ban(sender, profile, time, reason);
 
-        if (target != null)
-            target.kickPlayer(message);
+                    if (target != null) {
+                        target.kickPlayer(reason);
+                    }
+
+                    ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + playerName + "' wurde gebannt!");
+                }
+            }
+
+        }
 
         ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + playerName + "' ist " + message);
     }
 
-    private void ban(CommandSender sender, String playerName, long time, String reason) {
+    private void ban(CommandSender sender, GameProfile profile, long time, String reason) {
         // MINECRAFT HACK
 
         // CREATE BAN ENTRY
-        BanEntry banEntry = new BanEntry(playerName);
-        banEntry.setCreated(new Date());
-        banEntry.setExpires(new Date(time));
-        banEntry.setSource(sender.getName());
-        banEntry.setReason(reason);
-
-        ((CraftServer) Bukkit.getServer()).getHandle().getNameBans().add(banEntry);
+        GameProfileBanEntry banEntry = new GameProfileBanEntry(profile, new Date(), sender.getName(), new Date(time), reason);
+        ((CraftServer) Bukkit.getServer()).getHandle().getProfileBans().add(banEntry);
     }
 
     private int[] parseString(String date, CommandSender sender) {

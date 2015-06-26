@@ -21,6 +21,8 @@
 
 package de.minestar.AdminStuff.commands;
 
+import java.util.Collection;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -46,7 +48,7 @@ public class cmdKickAll extends AbstractExtendedCommand {
      * @param split
      */
     public void execute(String[] args, Player player) {
-        Player[] allPlayers = Bukkit.getOnlinePlayers();
+        Collection<? extends Player> allPlayers = Bukkit.getOnlinePlayers();
         String msg = getMessage(args);
         for (Player kPlayer : allPlayers) {
             if (!kPlayer.equals(player))

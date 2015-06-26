@@ -21,6 +21,7 @@
 
 package de.minestar.AdminStuff.commands;
 
+import java.util.HashSet;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -62,7 +63,7 @@ public class cmdFlash extends AbstractExtendedCommand {
      */
     public void execute(String[] args, Player player) {
         if (args.length == 0) {
-            Location strikeLocation = player.getLastTwoTargetBlocks(null, 50).get(0).getLocation();
+            Location strikeLocation = player.getLastTwoTargetBlocks((HashSet<Byte>) null, 50).get(0).getLocation();
             if (strikeLocation != null)
                 player.getWorld().strikeLightning(strikeLocation);
         } else

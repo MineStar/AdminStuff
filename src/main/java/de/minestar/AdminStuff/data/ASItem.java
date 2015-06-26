@@ -24,10 +24,10 @@ package de.minestar.AdminStuff.data;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.server.v1_7_R2.Block;
+import net.minecraft.server.v1_8_R3.Block;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_7_R2.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
 import org.bukkit.inventory.ItemStack;
 
 import com.bukkit.gemo.utils.BlockUtils;

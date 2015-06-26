@@ -21,13 +21,15 @@
 
 package de.minestar.AdminStuff.commands;
 
-import net.minecraft.server.v1_7_R2.BanList;
+import net.minecraft.server.v1_8_R3.GameProfileBanList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_7_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.entity.Player;
+
+import com.mojang.authlib.GameProfile;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -56,13 +58,19 @@ public class cmdUnban extends AbstractCommand {
             ChatUtils.writeError(sender, pluginName, "Spieler '" + args[0] + "' existiert nicht!");
         } else {
             // MINECRAFT HACK
-            BanList banList = ((CraftServer) Bukkit.getServer()).getHandle().getNameBans();
-            if (!banList.isBanned(targetName))
-                ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + " war nicht gebannt!");
-            else {
-                banList.remove(targetName);
-                ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
+            CraftServer cServer = (CraftServer) Bukkit.getServer();
+            GameProfileBanList banList = cServer.getHandle().getProfileBans();
+            GameProfile[] gameProfiles = cServer.getHandle().g();
+            for (GameProfile profile : gameProfiles) {
+                if (profile.getName().equalsIgnoreCase(targetName)) {
+                    if (banList.isBanned(profile)) {
+                        ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
+                        banList.remove(profile);
+                        return;
+                    }
+                }
             }
+            ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + " war nicht gebannt!");
         }
     }
 
