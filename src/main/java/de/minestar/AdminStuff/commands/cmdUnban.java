@@ -60,15 +60,13 @@ public class cmdUnban extends AbstractCommand {
             // MINECRAFT HACK
             CraftServer cServer = (CraftServer) Bukkit.getServer();
             GameProfileBanList banList = cServer.getHandle().getProfileBans();
-            GameProfile[] gameProfiles = cServer.getHandle().g();
-            for (GameProfile profile : gameProfiles) {
-                if (profile.getName().equalsIgnoreCase(targetName)) {
-                    if (banList.isBanned(profile)) {
-                        ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
-                        banList.remove(profile);
-                        return;
-                    }
-                }
+            GameProfile bannedProfile = banList.a(targetName);
+            if (bannedProfile != null) {
+                // if (banList.isBanned(profile)) {
+                ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
+                banList.remove(bannedProfile);
+                return;
+                // }
             }
             ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + " war nicht gebannt!");
         }
