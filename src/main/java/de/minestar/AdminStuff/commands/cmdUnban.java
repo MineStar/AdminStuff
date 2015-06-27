@@ -62,11 +62,9 @@ public class cmdUnban extends AbstractCommand {
             GameProfileBanList banList = cServer.getHandle().getProfileBans();
             GameProfile bannedProfile = banList.a(targetName);
             if (bannedProfile != null) {
-                // if (banList.isBanned(profile)) {
                 ChatUtils.writeSuccess(sender, pluginName, "Spieler '" + targetName + "' wurde entbannt!");
                 banList.remove(bannedProfile);
                 return;
-                // }
             }
             ChatUtils.writeError(sender, pluginName, "Spieler '" + targetName + " war nicht gebannt!");
         }
