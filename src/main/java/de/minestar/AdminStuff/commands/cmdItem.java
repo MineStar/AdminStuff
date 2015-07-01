@@ -21,14 +21,11 @@
 
 package de.minestar.AdminStuff.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import de.minestar.AdminStuff.Core;
-import de.minestar.AdminStuff.data.ASItem;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
-import de.minestar.minestarlibrary.utils.ConsoleUtils;
-import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdItem extends AbstractExtendedCommand {
 
@@ -49,33 +46,10 @@ public class cmdItem extends AbstractExtendedCommand {
      *            split[1] is the itemamount
      */
     public void execute(String[] args, Player player) {
-        String ID = ASItem.getIDPart(args[0].replaceAll("minecraft:", ""));
-        int amount = 64;
-        if (args.length == 2) {
-            try {
-                amount = Integer.parseInt(args[1]);
-            } catch (Exception e) {
-                PlayerUtils.sendError(player, ID, args[1] + " ist keine Zahl! Itemanzahl auf Eins gesetzt!");
-            }
-            if (amount < 1) {
-                PlayerUtils.sendError(player, pluginName, args[1] + "ist kleiner als Eins! Itemanzahl auf Eins gesetzt!");
-                amount = 1;
-            }
+        String command = "/give";
+        for (String arg : args) {
+            command += ' ' + arg;
         }
-        byte data = ASItem.getDataPart(args[0]);
-        ItemStack item = ASItem.getItemStack(ID, amount);
-
-        if (item == null) {
-            PlayerUtils.sendError(player, pluginName, "'" + args[0] + "' wurde nicht gefunden");
-            return;
-        }
-        item.setDurability(data);
-        player.getInventory().addItem(item);
-
-        // when item has a sub id
-        String itemName = item.getType().name() + (data == 0 ? "" : ":" + data);
-        player.updateInventory();
-        PlayerUtils.sendInfo(player, "Du erhaelst " + amount + " mal " + itemName);
-        ConsoleUtils.printInfo(pluginName, "ITEM: " + player.getName() + " himself : " + amount + " x " + itemName);
+        Bukkit.getServer().dispatchCommand(player, command);
     }
 }

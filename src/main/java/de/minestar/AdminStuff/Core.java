@@ -38,7 +38,6 @@ import de.minestar.AdminStuff.commands.cmdDifficulty;
 import de.minestar.AdminStuff.commands.cmdFillChest;
 import de.minestar.AdminStuff.commands.cmdFlash;
 import de.minestar.AdminStuff.commands.cmdGamerule;
-import de.minestar.AdminStuff.commands.cmdGive;
 import de.minestar.AdminStuff.commands.cmdGlue;
 import de.minestar.AdminStuff.commands.cmdGlueHere;
 import de.minestar.AdminStuff.commands.cmdGod;
@@ -48,7 +47,6 @@ import de.minestar.AdminStuff.commands.cmdInvsee;
 import de.minestar.AdminStuff.commands.cmdItem;
 import de.minestar.AdminStuff.commands.cmdKick;
 import de.minestar.AdminStuff.commands.cmdKickAll;
-import de.minestar.AdminStuff.commands.cmdKill;
 import de.minestar.AdminStuff.commands.cmdKit;
 import de.minestar.AdminStuff.commands.cmdListKits;
 import de.minestar.AdminStuff.commands.cmdMe;
@@ -122,8 +120,6 @@ public class Core extends AbstractCore {
 						"adminstuff.commands.admin.burn"),
 				new cmdSlap("/slap", "<Player>",
 						"adminstuff.commands.admin.slap", pManager),
-				new cmdKill("/kill", "[Player_1] ... [Player_N]",
-						"adminstuff.commands.admin.kill"),
 				new cmdGlue("/glue", "<Player>",
 						"adminstuff.commands.admin.glue"),
 				new cmdGlueHere("/gluehere", "<Player>",
@@ -153,13 +149,10 @@ public class Core extends AbstractCore {
 						"adminstuff.commands.admin.tempban"),
 
 				// GIVE COMMANDS
-				new cmdItem("/i", "<ItemID or Name>[:SubID] [Amount]",
+				new cmdItem("/i", "<Item to give>",
 						"adminstuff.commands.admin.i"),
-				new cmdItem("/item", "<ItemID or Name>[:SubID] [Amount]",
+				new cmdItem("/item", "<Item to give>",
 						"adminstuff.commands.admin.i"),
-				new cmdGive("/give",
-						"<Player> <ItemID or Name>[:SubID] [Amount]",
-						"adminstuff.commands.admin.give"),
 
 				// KIT COMMAND
 				new cmdKit("/kit", "<Name>",
