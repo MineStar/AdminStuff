@@ -27,6 +27,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -94,7 +95,7 @@ public class cmdButcher extends AbstractExtendedCommand {
                     continue;
 
                 for (Entity entity : chunk.getEntities()) {
-                    if (entity instanceof Player || (!(entity instanceof LivingEntity)))
+                    if (entity instanceof Player || (!(entity instanceof LivingEntity)) || (entity instanceof ArmorStand))
                         continue;
                     if (isInRange(tempRadius, pLoc, entity.getLocation())) {
                         entity.remove();
@@ -114,7 +115,7 @@ public class cmdButcher extends AbstractExtendedCommand {
         Collection<LivingEntity> entities = player.getWorld().getEntitiesByClass(LivingEntity.class);
         int counter = 0;
         for (LivingEntity entity : entities) {
-            if (entity instanceof Player)
+            if ((entity instanceof Player) || (entity instanceof ArmorStand))
                 continue;
             entity.remove();
             ++counter;

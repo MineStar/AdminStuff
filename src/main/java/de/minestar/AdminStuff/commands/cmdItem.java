@@ -46,7 +46,7 @@ public class cmdItem extends AbstractExtendedCommand {
      *            split[1] is the itemamount
      */
     public void execute(String[] args, Player player) {
-        String command = "/give";
+        String command = "give " + player.getName();
         for (String arg : args) {
             command += ' ' + arg;
         }
