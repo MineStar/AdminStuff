@@ -27,9 +27,9 @@ import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class cmdSpawnpoint extends AbstractExtendedCommand {
+public class cmdBlockedCommand extends AbstractExtendedCommand {
 
-    public cmdSpawnpoint(String syntax, String arguments, String node) {
+    public cmdBlockedCommand(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
     }
 

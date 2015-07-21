@@ -41,6 +41,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -66,6 +67,14 @@ public class PlayerListener implements Listener {
 
     public PlayerListener(PlayerManager pManager) {
         this.pManager = pManager;
+    }
+
+    @EventHandler
+    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        if (event.getMessage().toLowerCase().startsWith("/minecraft:")) {
+            PlayerUtils.sendError(event.getPlayer(), "nope...");
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

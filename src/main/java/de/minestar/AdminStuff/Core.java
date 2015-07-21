@@ -59,7 +59,7 @@ import de.minestar.AdminStuff.commands.cmdReply;
 import de.minestar.AdminStuff.commands.cmdRide;
 import de.minestar.AdminStuff.commands.cmdSeen;
 import de.minestar.AdminStuff.commands.cmdSlap;
-import de.minestar.AdminStuff.commands.cmdSpawnpoint;
+import de.minestar.AdminStuff.commands.cmdBlockedCommand;
 import de.minestar.AdminStuff.commands.cmdStack;
 import de.minestar.AdminStuff.commands.cmdTempBan;
 import de.minestar.AdminStuff.commands.cmdTime;
@@ -233,8 +233,14 @@ public class Core extends AbstractCore {
 				// OVERWRITE COMMANDS
 				new cmdGamerule("/gamerule", "",
 						"adminstuff.commands.admin.gamerule"),
-				new cmdSpawnpoint("/spawnpoint", "",
+				new cmdBlockedCommand("/spawnpoint", "",
 						"adminstuff.commands.admin.spawnpoint"),
+				new cmdBlockedCommand("/minecraft:me", "",
+		                        "adminstuff.commands.admin.spawnpoint"),
+                new cmdBlockedCommand("/minecraft:tell", "",
+		                                "adminstuff.commands.admin.spawnpoint"),
+                new cmdBlockedCommand("/tell", "",
+                        "adminstuff.commands.admin.spawnpoint"),
 				new cmdDifficulty("/difficulty", "",
 						"adminstuff.commands.admin.difficulty"),
 

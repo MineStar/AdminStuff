@@ -9,6 +9,8 @@ commands:
   mobs:
     description: Toggle AFK status
     usage: /mobs
+  tell:
+    description: Nothing    
   ban:
     description: Ban a player
     usage: /ban <Player> [Message]   
