@@ -11,9 +11,6 @@ commands:
     usage: /mobs
   tell:
     description: Nothing    
-  ban:
-    description: Ban a player
-    usage: /ban <Player> [Message]   
   broadcast:
     description: Broadcast a message
     usage: /broadcast <Message>  
@@ -113,15 +110,9 @@ commands:
   stack:
     description: Stack your inventory
     usage: /stack
-  tempban:
-    description: Temporary ban a player
-    usage: /tempban <Player> <Time>  
   time:
     description: Set the time of your world
     usage: /time <day|night>
-  unban:
-    description: Unban a player
-    usage: /unban <Player>
   weather:
     description: Set the weather of your world
     usage: /weather <sun|rain|storm>

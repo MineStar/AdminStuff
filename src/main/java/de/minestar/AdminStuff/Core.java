@@ -141,12 +141,12 @@ public class Core extends AbstractCore {
 						"adminstuff.commands.admin.kickall"),
 
 				// BAN COMMANDS
-				new cmdUnban("/unban", "<Player>",
-						"adminstuff.commands.admin.unban"),
-				new cmdBan("/ban", "<Player> <Reason>",
-						"adminstuff.commands.admin.ban"),
-				new cmdTempBan("/tempban", "<Player> <Time> <Reason>",
-						"adminstuff.commands.admin.tempban"),
+//				new cmdUnban("/unban", "<Player>",
+//						"adminstuff.commands.admin.unban"),
+//				new cmdBan("/ban", "<Player> <Reason>",
+//						"adminstuff.commands.admin.ban"),
+//				new cmdTempBan("/tempban", "<Player> <Time> <Reason>",
+//						"adminstuff.commands.admin.tempban"),
 
 				// GIVE COMMANDS
 				new cmdItem("/i", "<Item to give>",
