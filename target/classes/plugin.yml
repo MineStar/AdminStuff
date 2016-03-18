@@ -110,6 +110,9 @@ commands:
   stack:
     description: Stack your inventory
     usage: /stack
+  tempban:
+    description: Temporary ban a player
+    usage: /tempban <Player> <Time>  
   time:
     description: Set the time of your world
     usage: /time <day|night>

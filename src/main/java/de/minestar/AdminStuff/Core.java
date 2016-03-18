@@ -145,8 +145,8 @@ public class Core extends AbstractCore {
 //						"adminstuff.commands.admin.unban"),
 //				new cmdBan("/ban", "<Player> <Reason>",
 //						"adminstuff.commands.admin.ban"),
-//				new cmdTempBan("/tempban", "<Player> <Time> <Reason>",
-//						"adminstuff.commands.admin.tempban"),
+				new cmdTempBan("/tempban", "<Player> <Time> <Reason>",
+						"adminstuff.commands.admin.tempban"),
 
 				// GIVE COMMANDS
 				new cmdItem("/i", "<Item to give>",
