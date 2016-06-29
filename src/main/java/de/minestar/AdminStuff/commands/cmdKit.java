@@ -105,7 +105,6 @@ public class cmdKit extends AbstractCommand {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void giveKit(Player target, List<ItemStack> kit, String kitName) {
         Inventory inv = target.getInventory();
         for (ItemStack item : kit)
