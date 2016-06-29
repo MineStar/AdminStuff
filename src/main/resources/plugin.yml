@@ -2,6 +2,7 @@ name: AdminStuff
 main: de.minestar.AdminStuff.Core
 version: ${pom.version}
 depend: [MineStarLibrary, MinestarCore]
+soft-depend: [ConAir2]
 commands:
   afk:
     description: Toggle AFK status

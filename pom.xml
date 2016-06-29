@@ -49,5 +49,11 @@
 			<artifactId>MinestarCore</artifactId>
 			<version>1.8.7-R0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>de.minestar</groupId>
+			<artifactId>ConAir2</artifactId>
+			<version>1.8.7-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+ 		</dependency>
 	</dependencies>
 </project>

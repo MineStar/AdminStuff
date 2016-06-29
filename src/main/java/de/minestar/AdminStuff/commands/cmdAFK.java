@@ -23,9 +23,11 @@ package de.minestar.AdminStuff.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.manager.PlayerManager;
+import de.minestar.conair2.listener.ChatListener;
 import de.minestar.core.MinestarCore;
 import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -63,12 +65,21 @@ public class cmdAFK extends AbstractCommand {
         if (isAFK) {
             Bukkit.broadcastMessage(player.getDisplayName() + " ist AFK");
             PlayerUtils.sendInfo(player, pluginName, "Du bist jetzt AFK");
+            if (searchConAir2() == true) ChatListener.sendAFK(player.getDisplayName(), true);
             pManager.updatePrefix(mPlayer);
         } else {
             pManager.updatePrefix(mPlayer);
             Bukkit.broadcastMessage(player.getDisplayName() + " ist wieder da");
             PlayerUtils.sendInfo(player, pluginName, "Willkommen zurueck :)");
+            if (searchConAir2() == true) ChatListener.sendAFK(player.getDisplayName(), false);
         }
-
+    }
+    
+    private boolean searchConAir2() {
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("ConAir2");
+        if (plugin != null && plugin.isEnabled())
+            return true;
+        else
+            return false;
     }
 }
