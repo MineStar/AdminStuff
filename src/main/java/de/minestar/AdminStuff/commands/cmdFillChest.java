@@ -50,7 +50,7 @@ public class cmdFillChest extends AbstractExtendedCommand {
     public void execute(String[] args, Player player) {
         ItemStack item = null;
         if (args.length == 0) {
-            ItemStack itemInHand = player.getItemInHand();
+            ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand != null) {
                 item = ASItem.getItemStack(itemInHand.getTypeId(), itemInHand.getData().getData(), 64);
             } else {
