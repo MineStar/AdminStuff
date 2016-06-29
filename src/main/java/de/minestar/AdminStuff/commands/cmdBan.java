@@ -23,12 +23,12 @@ package de.minestar.AdminStuff.commands;
 
 import java.util.Date;
 
-import net.minecraft.server.v1_8_R3.GameProfileBanEntry;
+import net.minecraft.server.v1_9_R2.GameProfileBanEntry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_9_R2.CraftServer;
 import org.bukkit.entity.Player;
 
 import com.mojang.authlib.GameProfile;
