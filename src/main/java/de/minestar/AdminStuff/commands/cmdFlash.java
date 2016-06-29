@@ -21,12 +21,13 @@
 
 package de.minestar.AdminStuff.commands;
 
-import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -63,7 +64,7 @@ public class cmdFlash extends AbstractExtendedCommand {
      */
     public void execute(String[] args, Player player) {
         if (args.length == 0) {
-            Location strikeLocation = player.getLastTwoTargetBlocks((HashSet<Byte>) null, 50).get(0).getLocation();
+            Location strikeLocation = player.getLastTwoTargetBlocks((Set<Material>) null, 50).get(0).getLocation();
             if (strikeLocation != null)
                 player.getWorld().strikeLightning(strikeLocation);
         } else
