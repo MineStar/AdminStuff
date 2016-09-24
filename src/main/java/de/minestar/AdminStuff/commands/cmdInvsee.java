@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -34,7 +34,8 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdInvsee extends AbstractExtendedCommand {
 
-    private Map<Player, ItemStack[]> backup = new HashMap<Player, ItemStack[]>();
+    private Map<Player, ItemStack[]> backupInv = new HashMap<Player, ItemStack[]>();
+    private Map<Player, ItemStack[]> backupArm = new HashMap<Player, ItemStack[]>();
 
     public cmdInvsee(String syntax, String arguments, String node) {
         super(Core.NAME, syntax, arguments, node);
@@ -52,7 +53,8 @@ public class cmdInvsee extends AbstractExtendedCommand {
      */
     public void execute(String[] args, Player player) {
         if (args.length == 0) {
-            ItemStack[] items = backup.remove(player);
+            ItemStack[] items = backupInv.remove(player);
+            ItemStack[] armor = backupArm.remove(player);
             if (items == null)
                 PlayerUtils.sendError(player, pluginName, "Du hast kein Inventar zum Wiederherstellen!");
             else {
@@ -60,7 +62,16 @@ public class cmdInvsee extends AbstractExtendedCommand {
                 player.getInventory().setContents(items);
                 PlayerUtils.sendSuccess(player, pluginName, "Dein Inventar wurde wiederhergestellt!");
             }
-
+            if (armor == null)
+                PlayerUtils.sendError(player, pluginName, "Du hast keine Rüstung zum Wiederherstellen!");
+            else {
+                player.getInventory().setHelmet(null);
+                player.getInventory().setChestplate(null);
+                player.getInventory().setLeggings(null);
+                player.getInventory().setBoots(null);
+                player.getInventory().setArmorContents(armor);
+                PlayerUtils.sendSuccess(player, pluginName, "Deine Rüstung wurde wiederhergestellt!");
+            }
         } else if (args.length == 1) {
             String targetName = args[0];
             Player target = PlayerUtils.getOnlinePlayer(targetName);
@@ -69,14 +80,20 @@ public class cmdInvsee extends AbstractExtendedCommand {
             else if (target.isDead() || !target.isOnline())
                 PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist tot oder nicht online!");
             else {
-                Inventory inv = player.getInventory();
+                PlayerInventory inv = player.getInventory();
                 // backup current inventory
-                backup.put(player, inv.getContents());
+                backupInv.put(player, inv.getContents());
+                backupArm.put(player, inv.getArmorContents());
 
                 inv.clear();
-
+                inv.setHelmet(null);
+                inv.setChestplate(null);
+                inv.setLeggings(null);
+                inv.setBoots(null);
+                
                 // copy inventory
                 inv.setContents(target.getInventory().getContents());
+                inv.setArmorContents(target.getInventory().getArmorContents());
 
                 PlayerUtils.sendSuccess(player, pluginName, "Zeige dir das Inventar von  '" + targetName + "'");
             }

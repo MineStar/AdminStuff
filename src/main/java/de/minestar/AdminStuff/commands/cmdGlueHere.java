@@ -21,16 +21,20 @@
 
 package de.minestar.AdminStuff.commands;
 
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.core.MinestarCore;
 import de.minestar.core.units.MinestarPlayer;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class cmdGlueHere extends AbstractExtendedCommand {
@@ -53,18 +57,43 @@ public class cmdGlueHere extends AbstractExtendedCommand {
     public void execute(String[] args, Player player) {
         Player target = null;
         MinestarPlayer mPlayer = null;
+        boolean forceGlue = false;
+        
+        for (String targetName : args) 
+            if (targetName.equalsIgnoreCase("-force")) forceGlue = true;
+        
         for (String targetName : args) {
+            if (targetName.equalsIgnoreCase("-force")) continue;
             target = PlayerUtils.getOnlinePlayer(targetName);
             if (target == null)
                 PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' wurde nicht gefunden!");
             else if (target.isDead() || !target.isOnline())
                 PlayerUtils.sendError(player, pluginName, "Spieler '" + targetName + "' ist tot oder offline!");
             else {
-
                 mPlayer = MinestarCore.getPlayer(target);
                 Location loc = mPlayer.getLocation("adminstuff.glue");
                 if (loc == null) {
-                    mPlayer.setLocation("adminstuff.glue", player.getLastTwoTargetBlocks((Set<Material>) null, 50).get(0).getLocation());
+                    List<Block> lastBlocks = player.getLastTwoTargetBlocks((Set<Material>) null, 50);
+                    BlockFace face = lastBlocks.get(1).getFace(lastBlocks.get(0));
+                    Location glueLoc = lastBlocks.get(0).getLocation();
+                    
+                    glueLoc.setX(glueLoc.getX() + 0.5);
+                    glueLoc.setZ(glueLoc.getZ() + 0.5);
+                    if (face == BlockFace.DOWN){
+                        glueLoc.setY(glueLoc.getY() - 1.0);
+                        if(!lastBlocks.get(0).getRelative(BlockFace.DOWN).getType().equals(Material.AIR) && forceGlue == false) {
+                            ChatUtils.writeError(player, pluginName, "Kann Spieler '" + target.getDisplayName() + "' nicht an diese Stelle kleben!");
+                            continue;
+                        }
+                    }
+                    if (face == BlockFace.UP){
+                        if(!lastBlocks.get(0).getRelative(BlockFace.UP).getType().equals(Material.AIR) && forceGlue == false) {
+                            ChatUtils.writeError(player, pluginName, "Kann Spieler '" + target.getDisplayName() + "' nicht an diese Stelle kleben!");
+                            continue;
+                        }
+                    }
+                    
+                    mPlayer.setLocation("adminstuff.glue", glueLoc);
                     PlayerUtils.sendSuccess(player, pluginName, "Spieler '" + target.getName() + "' ist festgeklebt!");
                     PlayerUtils.sendInfo(target, pluginName, "Du bist festgeklebt!");
                 } else {
