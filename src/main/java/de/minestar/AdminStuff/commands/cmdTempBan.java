@@ -26,12 +26,12 @@ import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.server.v1_8_R3.GameProfileBanEntry;
+import net.minecraft.server.v1_10_R1.GameProfileBanEntry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_10_R1.CraftServer;
 import org.bukkit.entity.Player;
 
 import com.mojang.authlib.GameProfile;

@@ -25,7 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
 import de.minestar.AdminStuff.commands.cmdAFK;
-import de.minestar.AdminStuff.commands.cmdBan;
+//import de.minestar.AdminStuff.commands.cmdBan;
 import de.minestar.AdminStuff.commands.cmdBlockCount;
 import de.minestar.AdminStuff.commands.cmdBroadcast;
 import de.minestar.AdminStuff.commands.cmdBurn;
@@ -64,7 +64,7 @@ import de.minestar.AdminStuff.commands.cmdStack;
 import de.minestar.AdminStuff.commands.cmdTempBan;
 import de.minestar.AdminStuff.commands.cmdTime;
 import de.minestar.AdminStuff.commands.cmdToggleDownfall;
-import de.minestar.AdminStuff.commands.cmdUnban;
+//import de.minestar.AdminStuff.commands.cmdUnban;
 import de.minestar.AdminStuff.commands.cmdWeather;
 import de.minestar.AdminStuff.listener.EntityListener;
 import de.minestar.AdminStuff.listener.PlayerListener;
@@ -145,8 +145,8 @@ public class Core extends AbstractCore {
 //						"adminstuff.commands.admin.unban"),
 //				new cmdBan("/ban", "<Player> <Reason>",
 //						"adminstuff.commands.admin.ban"),
-//				new cmdTempBan("/tempban", "<Player> <Time> <Reason>",
-//						"adminstuff.commands.admin.tempban"),
+				new cmdTempBan("/tempban", "<Player> <Time> <Reason>",
+						"adminstuff.commands.admin.tempban"),
 
 				// GIVE COMMANDS
 				new cmdItem("/i", "<Item to give>",

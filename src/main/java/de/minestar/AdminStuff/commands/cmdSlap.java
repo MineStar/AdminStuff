@@ -23,9 +23,12 @@ package de.minestar.AdminStuff.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import de.minestar.AdminStuff.Core;
 import de.minestar.AdminStuff.manager.PlayerManager;
@@ -81,10 +84,17 @@ public class cmdSlap extends AbstractCommand {
 
             if (wasSlapped) {
                 Bukkit.broadcastMessage(ChatColor.BLUE + sender.getName() + " schlaegt " + mPlayer.getNickName() + " mit einem kalten Fisch ins Gesicht!");
+                
+                PlayerInventory inv = mPlayer.getBukkitPlayer().getInventory();
+                int firstEmpty = inv.firstEmpty();
+                if (firstEmpty != -1) {
+                    ItemStack stack=new ItemStack(Material.RAW_FISH,1);
+                    inv.setItem(firstEmpty, stack);
+                }
                 pManager.updatePrefix(mPlayer);
             } else {
                 pManager.updatePrefix(mPlayer);
-                Bukkit.broadcastMessage(ChatColor.BLUE + mPlayer.getNickName() + "s Fisch wurde von einer Sturmmoeve gefressen!");
+                Bukkit.broadcastMessage(ChatColor.BLUE + mPlayer.getNickName() + "s Fisch wurde von einer Sturmmöwe gefressen!");
             }
         }
     }

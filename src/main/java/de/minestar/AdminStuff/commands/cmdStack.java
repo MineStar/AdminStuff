@@ -104,6 +104,8 @@ public class cmdStack extends AbstractCommand {
         ignoreMaxStacks.add(Material.BED.getId());
         ignoreMaxStacks.add(Material.SHEARS.getId());
         // records
+        ignoreMaxStacks.add(Material.GOLD_RECORD.getId());
+        ignoreMaxStacks.add(Material.GREEN_RECORD.getId());
         ignoreMaxStacks.add(Material.RECORD_3.getId());
         ignoreMaxStacks.add(Material.RECORD_4.getId());
         ignoreMaxStacks.add(Material.RECORD_5.getId());
