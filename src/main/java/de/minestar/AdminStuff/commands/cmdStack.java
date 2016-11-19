@@ -78,99 +78,111 @@ public class cmdStack extends AbstractCommand {
 
     }
 
-    @SuppressWarnings("deprecation")
     private void stack(Player target, CommandSender sender) {
         ItemStack[] items = target.getInventory().getContents();
         int len = items.length;
 
         int affected = 0;
 
-        HashSet<Integer> ignoreMaxStacks = new HashSet<Integer>();
+        HashSet<Material> ignoreMaxStacks = new HashSet<Material>();
         // signs
-        ignoreMaxStacks.add(Material.SIGN.getId());
-        ignoreMaxStacks.add(Material.WALL_SIGN.getId());
-        ignoreMaxStacks.add(Material.SIGN_POST.getId());
+        ignoreMaxStacks.add(Material.SIGN);
+        ignoreMaxStacks.add(Material.WALL_SIGN);
+        ignoreMaxStacks.add(Material.SIGN_POST);
         // doors
-        ignoreMaxStacks.add(Material.WOOD_DOOR.getId());
-        ignoreMaxStacks.add(Material.IRON_DOOR.getId());
+        ignoreMaxStacks.add(Material.WOOD_DOOR);
+        ignoreMaxStacks.add(Material.ACACIA_DOOR_ITEM);
+        ignoreMaxStacks.add(Material.BIRCH_DOOR_ITEM);
+        ignoreMaxStacks.add(Material.DARK_OAK_DOOR_ITEM);
+        ignoreMaxStacks.add(Material.JUNGLE_DOOR_ITEM);
+        ignoreMaxStacks.add(Material.SPRUCE_DOOR_ITEM);
+        ignoreMaxStacks.add(Material.IRON_DOOR);
+        // boats
+        ignoreMaxStacks.add(Material.BOAT);
+        ignoreMaxStacks.add(Material.BOAT_ACACIA);
+        ignoreMaxStacks.add(Material.BOAT_BIRCH);
+        ignoreMaxStacks.add(Material.BOAT_DARK_OAK);
+        ignoreMaxStacks.add(Material.BOAT_JUNGLE);
+        ignoreMaxStacks.add(Material.BOAT_SPRUCE);
         // common
-        ignoreMaxStacks.add(Material.BOAT.getId());
-        ignoreMaxStacks.add(Material.EGG.getId());
-        ignoreMaxStacks.add(Material.CAKE.getId());
-        ignoreMaxStacks.add(Material.CAKE_BLOCK.getId());
-        ignoreMaxStacks.add(Material.SKULL_ITEM.getId());
-        ignoreMaxStacks.add(Material.SKULL.getId());
-        ignoreMaxStacks.add(Material.BUCKET.getId());
-        ignoreMaxStacks.add(Material.BED.getId());
-        ignoreMaxStacks.add(Material.SHEARS.getId());
+        ignoreMaxStacks.add(Material.EGG);
+        ignoreMaxStacks.add(Material.CAKE);
+        ignoreMaxStacks.add(Material.CAKE_BLOCK);
+        ignoreMaxStacks.add(Material.SKULL_ITEM);
+        ignoreMaxStacks.add(Material.SKULL);
+        ignoreMaxStacks.add(Material.BUCKET);
+        ignoreMaxStacks.add(Material.BED);
+        ignoreMaxStacks.add(Material.SHEARS);
         // records
-        ignoreMaxStacks.add(Material.GOLD_RECORD.getId());
-        ignoreMaxStacks.add(Material.GREEN_RECORD.getId());
-        ignoreMaxStacks.add(Material.RECORD_3.getId());
-        ignoreMaxStacks.add(Material.RECORD_4.getId());
-        ignoreMaxStacks.add(Material.RECORD_5.getId());
-        ignoreMaxStacks.add(Material.RECORD_6.getId());
-        ignoreMaxStacks.add(Material.RECORD_7.getId());
-        ignoreMaxStacks.add(Material.RECORD_8.getId());
-        ignoreMaxStacks.add(Material.RECORD_9.getId());
-        ignoreMaxStacks.add(Material.RECORD_10.getId());
-        ignoreMaxStacks.add(Material.RECORD_11.getId());
-        ignoreMaxStacks.add(Material.RECORD_12.getId());
+        ignoreMaxStacks.add(Material.GOLD_RECORD);
+        ignoreMaxStacks.add(Material.GREEN_RECORD);
+        ignoreMaxStacks.add(Material.RECORD_3);
+        ignoreMaxStacks.add(Material.RECORD_4);
+        ignoreMaxStacks.add(Material.RECORD_5);
+        ignoreMaxStacks.add(Material.RECORD_6);
+        ignoreMaxStacks.add(Material.RECORD_7);
+        ignoreMaxStacks.add(Material.RECORD_8);
+        ignoreMaxStacks.add(Material.RECORD_9);
+        ignoreMaxStacks.add(Material.RECORD_10);
+        ignoreMaxStacks.add(Material.RECORD_11);
+        ignoreMaxStacks.add(Material.RECORD_12);
         // minecarts
-        ignoreMaxStacks.add(Material.MINECART.getId());
-        ignoreMaxStacks.add(Material.STORAGE_MINECART.getId());
-        ignoreMaxStacks.add(Material.POWERED_MINECART.getId());
-        ignoreMaxStacks.add(Material.EXPLOSIVE_MINECART.getId());
-        ignoreMaxStacks.add(Material.HOPPER_MINECART.getId());
+        ignoreMaxStacks.add(Material.MINECART);
+        ignoreMaxStacks.add(Material.STORAGE_MINECART);
+        ignoreMaxStacks.add(Material.POWERED_MINECART);
+        ignoreMaxStacks.add(Material.EXPLOSIVE_MINECART);
+        ignoreMaxStacks.add(Material.HOPPER_MINECART);
         // plates, leggings, helmets, boots
-        ignoreMaxStacks.add(Material.IRON_BOOTS.getId());
-        ignoreMaxStacks.add(Material.IRON_LEGGINGS.getId());
-        ignoreMaxStacks.add(Material.IRON_CHESTPLATE.getId());
-        ignoreMaxStacks.add(Material.IRON_HELMET.getId());
-        ignoreMaxStacks.add(Material.GOLD_BOOTS.getId());
-        ignoreMaxStacks.add(Material.GOLD_LEGGINGS.getId());
-        ignoreMaxStacks.add(Material.GOLD_CHESTPLATE.getId());
-        ignoreMaxStacks.add(Material.GOLD_HELMET.getId());
-        ignoreMaxStacks.add(Material.DIAMOND_BOOTS.getId());
-        ignoreMaxStacks.add(Material.DIAMOND_LEGGINGS.getId());
-        ignoreMaxStacks.add(Material.DIAMOND_CHESTPLATE.getId());
-        ignoreMaxStacks.add(Material.DIAMOND_HELMET.getId());
-        ignoreMaxStacks.add(Material.LEATHER_BOOTS.getId());
-        ignoreMaxStacks.add(Material.LEATHER_LEGGINGS.getId());
-        ignoreMaxStacks.add(Material.LEATHER_CHESTPLATE.getId());
-        ignoreMaxStacks.add(Material.LEATHER_HELMET.getId());
+        ignoreMaxStacks.add(Material.IRON_BOOTS);
+        ignoreMaxStacks.add(Material.IRON_LEGGINGS);
+        ignoreMaxStacks.add(Material.IRON_CHESTPLATE);
+        ignoreMaxStacks.add(Material.IRON_HELMET);
+        ignoreMaxStacks.add(Material.GOLD_BOOTS);
+        ignoreMaxStacks.add(Material.GOLD_LEGGINGS);
+        ignoreMaxStacks.add(Material.GOLD_CHESTPLATE);
+        ignoreMaxStacks.add(Material.GOLD_HELMET);
+        ignoreMaxStacks.add(Material.DIAMOND_BOOTS);
+        ignoreMaxStacks.add(Material.DIAMOND_LEGGINGS);
+        ignoreMaxStacks.add(Material.DIAMOND_CHESTPLATE);
+        ignoreMaxStacks.add(Material.DIAMOND_HELMET);
+        ignoreMaxStacks.add(Material.LEATHER_BOOTS);
+        ignoreMaxStacks.add(Material.LEATHER_LEGGINGS);
+        ignoreMaxStacks.add(Material.LEATHER_CHESTPLATE);
+        ignoreMaxStacks.add(Material.LEATHER_HELMET);
         // horse
-        ignoreMaxStacks.add(Material.SADDLE.getId());
-        ignoreMaxStacks.add(Material.IRON_BARDING.getId());
-        ignoreMaxStacks.add(Material.GOLD_BARDING.getId());
-        ignoreMaxStacks.add(Material.DIAMOND_BARDING.getId());
+        ignoreMaxStacks.add(Material.SADDLE);
+        ignoreMaxStacks.add(Material.IRON_BARDING);
+        ignoreMaxStacks.add(Material.GOLD_BARDING);
+        ignoreMaxStacks.add(Material.DIAMOND_BARDING);
         // weapons
-        ignoreMaxStacks.add(Material.BOW.getId());
+        ignoreMaxStacks.add(Material.BOW);
         // sword
-        ignoreMaxStacks.add(Material.DIAMOND_SWORD.getId());
-        ignoreMaxStacks.add(Material.GOLD_SWORD.getId());
-        ignoreMaxStacks.add(Material.IRON_SWORD.getId());
-        ignoreMaxStacks.add(Material.WOOD_SWORD.getId());
+        ignoreMaxStacks.add(Material.DIAMOND_SWORD);
+        ignoreMaxStacks.add(Material.GOLD_SWORD);
+        ignoreMaxStacks.add(Material.IRON_SWORD);
+        ignoreMaxStacks.add(Material.WOOD_SWORD);
         // axe
-        ignoreMaxStacks.add(Material.DIAMOND_AXE.getId());
-        ignoreMaxStacks.add(Material.GOLD_AXE.getId());
-        ignoreMaxStacks.add(Material.IRON_AXE.getId());
-        ignoreMaxStacks.add(Material.WOOD_AXE.getId());
+        ignoreMaxStacks.add(Material.DIAMOND_AXE);
+        ignoreMaxStacks.add(Material.GOLD_AXE);
+        ignoreMaxStacks.add(Material.IRON_AXE);
+        ignoreMaxStacks.add(Material.WOOD_AXE);
         // spade
-        ignoreMaxStacks.add(Material.DIAMOND_SPADE.getId());
-        ignoreMaxStacks.add(Material.GOLD_SPADE.getId());
-        ignoreMaxStacks.add(Material.IRON_SPADE.getId());
-        ignoreMaxStacks.add(Material.WOOD_SPADE.getId());
+        ignoreMaxStacks.add(Material.DIAMOND_SPADE);
+        ignoreMaxStacks.add(Material.GOLD_SPADE);
+        ignoreMaxStacks.add(Material.IRON_SPADE);
+        ignoreMaxStacks.add(Material.WOOD_SPADE);
         // pickaxe
-        ignoreMaxStacks.add(Material.DIAMOND_PICKAXE.getId());
-        ignoreMaxStacks.add(Material.GOLD_PICKAXE.getId());
-        ignoreMaxStacks.add(Material.IRON_PICKAXE.getId());
-        ignoreMaxStacks.add(Material.WOOD_PICKAXE.getId());
+        ignoreMaxStacks.add(Material.DIAMOND_PICKAXE);
+        ignoreMaxStacks.add(Material.GOLD_PICKAXE);
+        ignoreMaxStacks.add(Material.IRON_PICKAXE);
+        ignoreMaxStacks.add(Material.WOOD_PICKAXE);
         // hoe
-        ignoreMaxStacks.add(Material.DIAMOND_HOE.getId());
-        ignoreMaxStacks.add(Material.GOLD_HOE.getId());
-        ignoreMaxStacks.add(Material.IRON_HOE.getId());
-        ignoreMaxStacks.add(Material.WOOD_HOE.getId());
+        ignoreMaxStacks.add(Material.DIAMOND_HOE);
+        ignoreMaxStacks.add(Material.GOLD_HOE);
+        ignoreMaxStacks.add(Material.IRON_HOE);
+        ignoreMaxStacks.add(Material.WOOD_HOE);
+        // shield
+        ignoreMaxStacks.add(Material.SHIELD);
 
         boolean ignoreMax = false, ignoreDamaged = false;
         for (int i = 0; i < len; i++) {
@@ -180,7 +192,7 @@ public class cmdStack extends AbstractCommand {
                 continue;
             }
 
-            ignoreMax = ignoreMaxStacks.contains(item.getTypeId());
+            ignoreMax = ignoreMaxStacks.contains(item.getType());
 
             // Avoid infinite stacks and stacks with durability
             if (item.getAmount() <= 0 || (!ignoreMax && item.getMaxStackSize() == 1)) {
